@@ -24,7 +24,6 @@ export class ProductService {
   }
   async fetchProduct(id: string) {
     //   console.log("ID",);
-
     try {
       return await this.productModel.findOne({ title: id }).exec();
     } catch (err) {
@@ -37,6 +36,19 @@ export class ProductService {
       return await this.productModel.findByIdAndDelete(id).exec();
     } catch (err) {
       return "Can't delete !!";
+    }
+  }
+  async updateProduct(id: string, field) {
+    const filter = {
+      id: id,
+    };
+    const update = {
+      field,
+    };
+    try {
+      return await this.productModel.findOneAndUpdate(filter, update);
+    } catch (err) {
+      console.log('UPDATE ERR');
     }
   }
 }

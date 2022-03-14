@@ -9,6 +9,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Put,
 } from '@nestjs/common';
 import { Express } from 'express';
 
@@ -47,5 +48,13 @@ export class ProductController {
   async deleteProduct(@Res() response, @Param() params) {
     const status = await this.productService.deleteProduct(params.id);
     return response.status(HttpStatus.OK).json({ status: status });
+  }
+  @Put(':id')
+  async updateProduct(@Res() response, @Body() request, @Param() params) {
+    const updateRQ = request.body.updateField;
+    const result = this.productService.updateProduct(params.id, updateRQ);
+    return response.state(HttpStatus.OK).json({ status: result });
+
+    // return response.state(HttpStatus.OK).json({ status: 'Ok' });
   }
 }
