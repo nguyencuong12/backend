@@ -5,23 +5,19 @@ export type ProductDocument = Product & Document;
 
 @Schema()
 export class Product {
-    
-  @Prop({ unique: true })
+  @Prop({})
   title: string;
   @Prop()
   description: string;
 
-  @Prop({unique:true})
-  id:string
-
   @Prop()
-  type:string;
+  type: string;
 
   @Prop()
   tag: [];
- 
+
   @Prop()
-  image:string;
+  image: string;
 
   @Prop()
   price: string;

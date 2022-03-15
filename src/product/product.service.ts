@@ -15,8 +15,10 @@ export class ProductService {
   async createProduct(product: Product) {
     try {
       const newProduct = new this.productModel(product);
+      console.log('NEW PRODUCT', newProduct);
       return await newProduct.save();
     } catch (err) {
+      console.log('ERR', err);
       if (err.code === 11000) {
         return 'Dupplicate';
       }

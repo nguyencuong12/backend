@@ -6,9 +6,10 @@ export async function Authenticate(
   res: Response,
   next: NextFunction,
 ) {
+  console.log('MIDDLE WARE CALL');
   let token: string = req.headers.authorization;
+  next();
   //   let result = await AuthService.auth(token);
-
   //   if (result) {
   //     next();
   //   } else {

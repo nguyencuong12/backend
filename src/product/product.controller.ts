@@ -5,19 +5,20 @@ import {
   HttpStatus,
   Post,
   Res,
+  Req,
   Param,
   Delete,
   UseInterceptors,
   UploadedFile,
   Put,
 } from '@nestjs/common';
-import { Express } from 'express';
+// import { Express } from 'express';
 
 import { ProductService } from './product.service';
 import { Product } from './product.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('/product')
+@Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
   @Get()
@@ -25,22 +26,23 @@ export class ProductController {
     const products = await this.productService.fetchAllProduct();
     return response.status(HttpStatus.OK).json({ products: products });
   }
-  @Post()
+  @Post('')
   @UseInterceptors(FileInterceptor('image'))
   async createProduct(
+    @Req() request,
     @Res() response,
     @Body() product: Product,
     @UploadedFile() file: any,
   ) {
-    console.log('FILE', file);
     let base64 = Buffer.from(file.buffer).toString('base64');
+    console.log('PRODUCT', product);
     product.image = base64;
     const status = await this.productService.createProduct(product);
-    console.log('STATUS', status);
     return response.status(HttpStatus.OK).json({ status: status });
   }
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
+    console.log('CALL');
     const product = await this.productService.fetchProduct(params.id);
     return response.status(HttpStatus.OK).json({ product: product });
   }
