@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product, ProductDocument } from './product.schema';
@@ -15,12 +15,16 @@ export class ProductService {
   async createProduct(product: Product) {
     try {
       const newProduct = new this.productModel(product);
-      console.log('NEW PRODUCT', newProduct);
       return await newProduct.save();
     } catch (err) {
-      console.log('ERR', err);
       if (err.code === 11000) {
-        return 'Dupplicate';
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Product Name Exist !!!',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
       }
     }
   }

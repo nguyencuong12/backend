@@ -17,7 +17,9 @@ import {
 import { ProductService } from './product.service';
 import { Product } from './product.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
-
+// interface propsType {
+//   hashtag: string;
+// }
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -35,7 +37,6 @@ export class ProductController {
     @UploadedFile() file: any,
   ) {
     let base64 = Buffer.from(file.buffer).toString('base64');
-    console.log('PRODUCT', product);
     product.image = base64;
     const status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ status: status });
