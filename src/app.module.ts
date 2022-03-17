@@ -17,8 +17,10 @@ import { UserModule } from './user/user.module';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/sashimeomeo'),
-    MulterModule.register({
-      dest: './files',
+    MulterModule.registerAsync({
+      useFactory: () => ({
+        dest: './upload',
+      }),
     }),
     ProductModule,
     AuthModule,
@@ -28,14 +30,16 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(Authenticate)
-      .exclude(
-        { path: 'product', method: RequestMethod.GET },
-        { path: 'product/:id', method: RequestMethod.GET },
-      )
-      .forRoutes(ProductController);
-  }
-}
+export class AppModule {}
+
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(Authenticate)
+//       .exclude(
+//         { path: 'product', method: RequestMethod.GET },
+//         { path: 'product/:id', method: RequestMethod.GET },
+//       )
+//       .forRoutes(ProductController);
+//   }
+// }

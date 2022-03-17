@@ -29,12 +29,10 @@ export class ProductService {
     }
   }
   async fetchProduct(id: string) {
-    //   console.log("ID",);
     try {
-      return await this.productModel.findOne({ title: id }).exec();
+      return await this.productModel.findById(id);
     } catch (err) {
-      // return "Don't find item !!"\
-      console.log('ERR', err);
+      throw err;
     }
   }
   async deleteProduct(id: string) {

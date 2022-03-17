@@ -7,7 +7,6 @@ export type ProductDocument = Product & Document;
 export class Product {
   @Prop({ require: true, unique: true })
   title: string;
-
   @Prop()
   description: string;
   @Prop()

@@ -14,12 +14,12 @@ import {
 } from '@nestjs/common';
 // import { Express } from 'express';
 
+import path = require('path');
 import { ProductService } from './product.service';
 import { Product } from './product.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
-// interface propsType {
-//   hashtag: string;
-// }
+import { ProductDto } from './dto/create-product.dto';
+import { diskStorage } from 'multer';
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -29,11 +29,21 @@ export class ProductController {
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename: string = file.originalname;
+
+          cb(null, filename);
+        },
+      }),
+    }),
+  )
   async createProduct(
-    @Req() request,
     @Res() response,
-    @Body() product: Product,
+    @Body() product: ProductDto,
     @UploadedFile() file: any,
   ) {
     let base64 = Buffer.from(file.buffer).toString('base64');
@@ -41,9 +51,20 @@ export class ProductController {
     const status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ status: status });
   }
+
+  @Post('/update')
+  @UseInterceptors(FileInterceptor('imageUpdate'))
+  async updateProduct(
+    @Res() response,
+    @Body() product: ProductDto,
+    @UploadedFile() file: any,
+  ) {
+    console.log('PRODUCT', product);
+  }
+
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
-    console.log('CALL');
+    console.log('CALL', params);
     const product = await this.productService.fetchProduct(params.id);
     return response.status(HttpStatus.OK).json({ product: product });
   }
@@ -52,12 +73,18 @@ export class ProductController {
     const status = await this.productService.deleteProduct(params.id);
     return response.status(HttpStatus.OK).json({ status: status });
   }
-  @Put(':id')
-  async updateProduct(@Res() response, @Body() request, @Param() params) {
-    const updateRQ = request.body.updateField;
-    const result = this.productService.updateProduct(params.id, updateRQ);
-    return response.state(HttpStatus.OK).json({ status: result });
+  // @Put(':id')
+  // // @UseInterceptors(FileInterceptor('image'))
+  // async updateProduct(
+  //   @Res() response,
+  //   @Body() body,
+  //   @Param('id') id: string,
+  //   @UploadedFile() file: any,
+  // ) {
+  //   console.log('body', body);
+  //   // const result = this.productService.updateProduct(params.id, updateRQ);
+  //   // return response.state(HttpStatus.OK).json({ status: result });
 
-    // return response.state(HttpStatus.OK).json({ status: 'Ok' });
-  }
+  //   // return response.state(HttpStatus.OK).json({ status: 'Ok' });
+  // }
 }
