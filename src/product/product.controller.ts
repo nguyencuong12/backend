@@ -31,11 +31,11 @@ export class ProductController {
   @Post('')
   @UseInterceptors(
     FileInterceptor('image', {
+      limits: { fileSize: 800000 },
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
           const filename: string = file.originalname;
-
           cb(null, filename);
         },
       }),
