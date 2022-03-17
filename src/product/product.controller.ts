@@ -46,8 +46,13 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: any,
   ) {
-    let base64 = Buffer.from(file.buffer).toString('base64');
-    product.image = base64;
+    console.log('FILE', file);
+
+    product.image = file.filename;
+
+    // console.log('FILE', file);
+    // let base64 = Buffer.from(file.buffer).toString('base64');
+    // product.image = base64;
     const status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ status: status });
   }
