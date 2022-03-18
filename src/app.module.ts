@@ -17,10 +17,9 @@ import { UserModule } from './user/user.module';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/sashimeomeo'),
-    MulterModule.registerAsync({
-      useFactory: () => ({
-        dest: './upload',
-      }),
+    MulterModule.register({
+      limits: { fieldSize: 25 * 1025 * 1024 },
+      // limits: { fileSize: 25 * 1025 * 1024 * 200 },
     }),
     ProductModule,
     AuthModule,

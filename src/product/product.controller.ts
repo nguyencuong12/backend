@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Put,
+  Query,
 } from '@nestjs/common';
 // import { Express } from 'express';
 
@@ -24,21 +25,21 @@ import { diskStorage } from 'multer';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
   @Get()
-  async fetchAllProduct(@Res() response) {
-    const products = await this.productService.fetchAllProduct();
+  async fetchAllProduct(@Res() response, @Query() query) {
+    let fontPage: number = query.currentPage;
+    const products = await this.productService.fetchAllProduct(fontPage);
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('')
   @UseInterceptors(
     FileInterceptor('image', {
-      limits: { fileSize: 800000 },
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const filename: string = file.originalname;
-          cb(null, filename);
-        },
-      }),
+      // storage: diskStorage({
+      //   destination: './uploads',
+      //   filename: (req, file, cb) => {
+      //     const filename: string = file.originalname;
+      //     cb(null, filename);
+      //   },
+      // }),
     }),
   )
   async createProduct(
@@ -46,25 +47,40 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: any,
   ) {
-    console.log('FILE', file);
+    console.log('PRODUCT', product);
+    // let arrHashtag = product.hashtag.split(' ');
+    let hashtagString: string = product.hashtag.toString();
+    let hashtagArray: Array<string> = hashtagString.split(' ');
+    product.hashtag = hashtagArray;
 
-    product.image = file.filename;
+    let base64 = Buffer.from(file.buffer).toString('base64');
+    product.image = base64;
 
-    // console.log('FILE', file);
-    // let base64 = Buffer.from(file.buffer).toString('base64');
-    // product.image = base64;
     const status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ status: status });
   }
 
   @Post('/update')
-  @UseInterceptors(FileInterceptor('imageUpdate'))
+  @UseInterceptors(
+    FileInterceptor('imageUpdate', {
+      limits: { fieldSize: 25 * 1025 * 1024 },
+    }),
+  )
   async updateProduct(
     @Res() response,
     @Body() product: ProductDto,
     @UploadedFile() file: any,
   ) {
-    console.log('PRODUCT', product);
+    if (file) {
+      let base64 = Buffer.from(file.buffer).toString('base64');
+      product.image = base64;
+    }
+    let hashtagString: string = product.hashtag.toString();
+    let hashtagArray: Array<string> = hashtagString.split(' ');
+    product.hashtag = hashtagArray;
+    console.log('PRODUCTTTT', product);
+    const update = await this.productService.updateProduct(product);
+    return response.status(HttpStatus.OK).json({ product: update });
   }
 
   @Get(':id')
@@ -73,9 +89,11 @@ export class ProductController {
     const product = await this.productService.fetchProduct(params.id);
     return response.status(HttpStatus.OK).json({ product: product });
   }
-  @Delete(':id')
-  async deleteProduct(@Res() response, @Param() params) {
-    const status = await this.productService.deleteProduct(params.id);
+  @Delete()
+  async deleteProduct(@Res() response, @Query() query) {
+    console.log('pamrams', query);
+    let id: string = query.id;
+    const status = await this.productService.deleteProduct(id);
     return response.status(HttpStatus.OK).json({ status: status });
   }
   // @Put(':id')
