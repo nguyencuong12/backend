@@ -13,6 +13,7 @@ import { Authenticate } from './auth/auth.middleware';
 import { ProductController } from './product/product.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     ProductModule,
     AuthModule,
     UserModule,
+    SearchModule,
     // UserModule,
   ],
   controllers: [AppController],

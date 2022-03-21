@@ -41,6 +41,9 @@ export class ProductService {
       }
     }
   }
+  async fetchHotProduct() {
+    return await this.productModel.find({ hashtag: 'hot' }).exec();
+  }
   async fetchProduct(id: string) {
     try {
       return await this.productModel.findById(id);

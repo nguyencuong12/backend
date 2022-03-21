@@ -26,7 +26,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
   @Get()
   async fetchAllProduct(@Res() response, @Query() query) {
-    let fontPage: number = query.currentPage;
+    let fontPage: number = query.currentPage || 1;
     const products = await this.productService.fetchAllProduct(fontPage);
     return response.status(HttpStatus.OK).json({ products: products });
   }
@@ -76,16 +76,18 @@ export class ProductController {
       product.image = base64;
     }
     let hashtagString: string = product.hashtag.toString();
-    let hashtagArray: Array<string> = hashtagString.split(' ');
+    console.log('HASHTAGSTRING', hashtagString);
+    let hashtagArray: Array<string> = hashtagString.split('#');
+    console.log('hashtagArray', hashtagArray);
     product.hashtag = hashtagArray;
-    console.log('PRODUCTTTT', product);
+
     const update = await this.productService.updateProduct(product);
     return response.status(HttpStatus.OK).json({ product: update });
   }
 
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
-    console.log('CALL', params);
+    console.log('CALL');
     const product = await this.productService.fetchProduct(params.id);
     return response.status(HttpStatus.OK).json({ product: product });
   }
@@ -96,18 +98,9 @@ export class ProductController {
     const status = await this.productService.deleteProduct(id);
     return response.status(HttpStatus.OK).json({ status: status });
   }
-  // @Put(':id')
-  // // @UseInterceptors(FileInterceptor('image'))
-  // async updateProduct(
-  //   @Res() response,
-  //   @Body() body,
-  //   @Param('id') id: string,
-  //   @UploadedFile() file: any,
-  // ) {
-  //   console.log('body', body);
-  //   // const result = this.productService.updateProduct(params.id, updateRQ);
-  //   // return response.state(HttpStatus.OK).json({ status: result });
-
-  //   // return response.state(HttpStatus.OK).json({ status: 'Ok' });
-  // }
+  @Post('hot/')
+  async fetchHotProduct(@Res() response) {
+    const products = await this.productService.fetchHotProduct();
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
 }
