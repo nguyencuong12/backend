@@ -28,6 +28,7 @@ export class ProductService {
   async createProduct(product: Product) {
     try {
       const newProduct = new this.productModel(product);
+      console.log('NEW PRODUCT', newProduct);
       return await newProduct.save();
     } catch (err) {
       if (err.code === 11000) {
@@ -42,7 +43,7 @@ export class ProductService {
     }
   }
   async fetchHotProduct() {
-    return await this.productModel.find({ hashtag: 'hot' }).exec();
+    return await this.productModel.find({ hashtag: '#hot' }).exec();
   }
   async fetchProduct(id: string) {
     try {
@@ -60,9 +61,7 @@ export class ProductService {
     }
   }
   async updateProduct(product: ProductDto) {
-    console.log('update service call', product._id);
     const filter = { _id: product._id };
-
     try {
       return await this.productModel.findOneAndUpdate(filter, product, {
         new: true,

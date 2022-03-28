@@ -76,11 +76,13 @@ export class ProductController {
       product.image = base64;
     }
     let hashtagString: string = product.hashtag.toString();
-    console.log('HASHTAGSTRING', hashtagString);
-    let hashtagArray: Array<string> = hashtagString.split('#');
-    console.log('hashtagArray', hashtagArray);
-    product.hashtag = hashtagArray;
+    // console.log('HASHTAGSTRING', hashtagString);
+    let hashtagArray: Array<string> = hashtagString.split(' ');
+    // console.log('hashtagArray', hashtagArray);
+    // product.hashtag = hashtagArray;
+    console.log('hashtagString', hashtagArray);
 
+    product.hashtag = hashtagArray;
     const update = await this.productService.updateProduct(product);
     return response.status(HttpStatus.OK).json({ product: update });
   }
@@ -88,7 +90,6 @@ export class ProductController {
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
     const product = await this.productService.fetchProduct(params.id);
-    console.log('PRODUCT', product);
     return response.status(HttpStatus.OK).json({ product: product });
   }
   @Delete()
@@ -101,6 +102,7 @@ export class ProductController {
   @Post('hot/')
   async fetchHotProduct(@Res() response) {
     const products = await this.productService.fetchHotProduct();
+    console.log('CALL', products);
     return response.status(HttpStatus.OK).json({ products: products });
   }
 }
