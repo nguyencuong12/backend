@@ -47,10 +47,10 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: any,
   ) {
-    console.log('PRODUCT', product);
     // let arrHashtag = product.hashtag.split(' ');
     let hashtagString: string = product.hashtag.toString();
     let hashtagArray: Array<string> = hashtagString.split(' ');
+    console.log('HASHTAG', hashtagArray);
     product.hashtag = hashtagArray;
 
     let base64 = Buffer.from(file.buffer).toString('base64');
@@ -87,8 +87,8 @@ export class ProductController {
 
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
-    console.log('CALL');
     const product = await this.productService.fetchProduct(params.id);
+    console.log('PRODUCT', product);
     return response.status(HttpStatus.OK).json({ product: product });
   }
   @Delete()
