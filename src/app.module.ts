@@ -15,8 +15,14 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { SearchModule } from './search/search.module';
 
+import { GuestModule } from './guest/guest.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '/uploads'),
+    }),
     MongooseModule.forRoot('mongodb://localhost:27017/sashimeomeo'),
     MulterModule.register({
       limits: { fieldSize: 25 * 1025 * 1024 },
@@ -26,6 +32,8 @@ import { SearchModule } from './search/search.module';
     AuthModule,
     UserModule,
     SearchModule,
+    GuestModule,
+
     // UserModule,
   ],
   controllers: [AppController],

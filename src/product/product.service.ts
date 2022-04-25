@@ -13,7 +13,6 @@ export class ProductService {
   async fetchAllProduct(currentPage: number) {
     // MyModel.find(query, fields, { skip: 10, limit: 5 }, function(err, results) { ... });
     let productAmount = await this.productModel.countDocuments();
-
     const query = this.productModel.find({ skip: 10, limit: 3 });
     const page: number = currentPage || 1;
     const limit: number = 4;
