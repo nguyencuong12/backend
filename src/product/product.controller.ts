@@ -33,31 +33,37 @@ export class ProductController {
   @Post('')
   @UseInterceptors(
     FileInterceptor('image', {
-      // storage: diskStorage({
-      //   destination: './uploads',
-      //   filename: (req, file, cb) => {
-      //     const filename: string = file.originalname;
-      //     cb(null, filename);
-      //   },
-      // }),
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename: string = file.originalname;
+          cb(null, filename);
+        },
+      }),
     }),
   )
   async createProduct(
     @Res() response,
     @Body() product: ProductDto,
-    @UploadedFile() file: any,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    // let arrHashtag = product.hashtag.split(' ');
-    let hashtagString: string = product.hashtag.toString();
-    let hashtagArray: Array<string> = hashtagString.split(' ');
-    console.log('HASHTAG', hashtagArray);
-    product.hashtag = hashtagArray;
+    //OLD VERSION !!!
+    // let hashtagString: string = product.hashtag.toString();
+    // let hashtagArray: Array<string> = hashtagString.split(' ');
+    // console.log('HASHTAG', hashtagArray);
+    // product.hashtag = hashtagArray;
+    // let base64 = Buffer.from(file.buffer).toString('base64');
+    // product.image = base64;
+    //NEW VERSION
+    if (file) {
+      product.image = file.path;
+    }
+    console.log('PRODUCTS', product);
+    return response.status(HttpStatus.OK).json({ message: product });
+    // console.log('PRODUCT', product);
 
-    let base64 = Buffer.from(file.buffer).toString('base64');
-    product.image = base64;
-
-    const status = await this.productService.createProduct(product);
-    return response.status(HttpStatus.OK).json({ status: status });
+    // const status = await this.productService.createProduct(product);
+    // return response.status(HttpStatus.OK).json({ status: status });
   }
 
   @Post('/update')
