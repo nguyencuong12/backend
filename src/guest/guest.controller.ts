@@ -18,7 +18,6 @@ export class GuestController {
     if (result) {
       return response.status(HttpStatus.OK).json({ message: 'Order success' });
     }
-
     // return response;
   }
 }

@@ -9,8 +9,8 @@ import { AppService } from './app.service';
 import { ProductModule } from './product/product.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
-import { Authenticate } from './auth/auth.middleware';
-import { ProductController } from './product/product.controller';
+// import { Authenticate } from './auth/auth.middleware';
+// import { ProductController } from './product/product.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { SearchModule } from './search/search.module';
@@ -18,8 +18,10 @@ import { SearchModule } from './search/search.module';
 import { GuestModule } from './guest/guest.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '/uploads'),
     }),
