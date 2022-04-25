@@ -8,7 +8,9 @@ export class GuestController {
 
   @Get('')
   async fetchOrders(@Res() response) {
-    return response.status(HttpStatus.OK);
+    return response
+      .status(HttpStatus.OK)
+      .json({ message: 'FETCH GUEST ORDER !!' });
   }
   @Post('/orders')
   async orderProducts(@Res() response, @Body() body: GuestDto) {
