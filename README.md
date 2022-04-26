@@ -74,7 +74,11 @@ Nest is [MIT licensed](LICENSE).
 
 API ROUTE :
 
-<h1>PRODUCT:</h1>
+## API Documents
+
+## Products
+
+```bash
 - createProduct => /product/ => method: POST => params({
   title:string,
   type:string,
@@ -102,4 +106,4 @@ API ROUTE :
   })
 
 - getAllHotProduct => /product/hot => method:POST
-<h1>PRODUCT:</h1>
+```
