@@ -26,8 +26,14 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Res() res, @Req() req) {
-    console.log('ABC');
-    let access_token = this.authService.login(req.user);
-    return res.status(HttpStatus.OK).json({ access_token: access_token });
+    console.log('REQ COMMING !!!');
+    // return req.user;
+    // console.log('ABC');
+    let access_token = await this.authService.login(req.user);
+    console.log('ACCRESS_TOKEN', access_token);
+
+    return res.status(HttpStatus.OK).json({ user: req.user });
+
+    // return res.status(HttpStatus.OK).json({ access_token: access_token });
   }
 }

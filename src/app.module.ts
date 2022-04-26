@@ -46,7 +46,7 @@ import { LocalStrategy } from './auth/local.strategy';
     // UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LocalStrategy],
 })
 export class AppModule {}
 
