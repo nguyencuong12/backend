@@ -107,3 +107,28 @@ API ROUTE :
 
 - getAllHotProduct => /product/hot => method:POST
 ```
+
+## Guest Order Products
+
+```bash
+- orderProduct => /guest/orders => method: POST => params({
+  orderInfo:[
+    {
+      title:string,
+      price:string,
+      amount:number;
+      description:string;
+      id:string
+    }
+  ]
+  userInfo:{
+    FullName:string;
+    PhoneNumber:string;
+    Note:string;
+    Email:string;
+    Address:string;
+  }
+  totalPriceOrders:string
+  })
+
+```
