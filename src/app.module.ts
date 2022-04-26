@@ -11,8 +11,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
 // import { Authenticate } from './auth/auth.middleware';
 // import { ProductController } from './product/product.controller';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+
 import { SearchModule } from './search/search.module';
 
 import { GuestModule } from './guest/guest.module';
@@ -20,6 +19,10 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { ImageModule } from './image/image.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './auth/local.strategy';
 
 @Module({
   imports: [
@@ -33,12 +36,13 @@ import { ImageModule } from './image/image.module';
       // limits: { fileSize: 25 * 1025 * 1024 * 200 },
     }),
     ProductModule,
-    AuthModule,
-    UserModule,
+
     SearchModule,
     GuestModule,
     ImageModule,
-
+    AuthModule,
+    UsersModule,
+    PassportModule,
     // UserModule,
   ],
   controllers: [AppController],

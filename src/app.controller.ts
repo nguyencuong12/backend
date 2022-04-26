@@ -1,9 +1,20 @@
-import { Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
-import { AppService } from './app.service';
-
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+// import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
+import { AuthGuard } from '@nestjs/passport';
+import { LocalAuthGuard } from './auth/local-auth.guard';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Get()
   getHello(@Res() response): string {
@@ -12,8 +23,11 @@ export class AppController {
 
     // return this.appService.getHello();
   }
-  @Post()
-  create() {
-    console.log('CREATE');
+  @UseGuards(LocalAuthGuard)
+  @Post('auth/login')
+  async login(@Res() res, @Req() req) {
+    console.log('ABC');
+    let access_token = this.authService.login(req.user);
+    return res.status(HttpStatus.OK).json({ access_token: access_token });
   }
 }
