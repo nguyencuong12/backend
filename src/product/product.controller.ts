@@ -21,6 +21,8 @@ import { Product } from './product.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductDto } from './dto/create-product.dto';
 import { diskStorage } from 'multer';
+const { uuid } = require('uuidv4');
+
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -56,14 +58,23 @@ export class ProductController {
     // product.image = base64;
     //NEW VERSION
     if (file) {
-      product.image = file.path;
+      let path = process.env.HOST + '/image/' + file.filename;
+      product.image = path;
     }
-    console.log('PRODUCTS', product);
-    return response.status(HttpStatus.OK).json({ message: product });
-    // console.log('PRODUCT', product);
 
-    // const status = await this.productService.createProduct(product);
-    // return response.status(HttpStatus.OK).json({ status: status });
+    let hashTag = product.hashtag
+      .toString()
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ');
+    // result.split(' ');
+    product.hashtag = hashTag;
+    product.id = uuid();
+    // console.log('PRODUCT HASHTAG', product.hashtag);
+    // return response.status(HttpStatus.OK).json({ message: product });
+
+    let status = await this.productService.createProduct(product);
+    return response.status(HttpStatus.OK).json({ message: status });
   }
 
   @Post('/update')
@@ -78,17 +89,16 @@ export class ProductController {
     @UploadedFile() file: any,
   ) {
     if (file) {
-      let base64 = Buffer.from(file.buffer).toString('base64');
-      product.image = base64;
+      let path = process.env.HOST + '/image/' + file.filename;
+      product.image = path;
     }
-    let hashtagString: string = product.hashtag.toString();
-    // console.log('HASHTAGSTRING', hashtagString);
-    let hashtagArray: Array<string> = hashtagString.split(' ');
-    // console.log('hashtagArray', hashtagArray);
-    // product.hashtag = hashtagArray;
-    console.log('hashtagString', hashtagArray);
-
-    product.hashtag = hashtagArray;
+    let hashTag = product.hashtag
+      .toString()
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ');
+    // result.split(' ');
+    product.hashtag = hashTag;
     const update = await this.productService.updateProduct(product);
     return response.status(HttpStatus.OK).json({ product: update });
   }

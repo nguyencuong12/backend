@@ -71,3 +71,35 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+API ROUTE :
+
+<h1>PRODUCT:</h1>
+- createProduct => /product/ => method: POST => params({
+  title:string,
+  type:string,
+  image:string,
+  price:string
+  hashtag:string
+  description:string
+  File:file
+  })
+
+- updateProduct => /product/update => method: POST => params({
+  title:string,
+  type:string,
+  image:string,
+  price:string
+  hashtag:string
+  File:file
+  description:string
+  })
+- getProduct => /product/:id => method:GET => query({
+  id:string
+  })
+- deleteProduct => /product/:id => method:GET => query({
+  id:string
+  })
+
+- getAllHotProduct => /product/hot => method:POST
+<h1>PRODUCT:</h1>

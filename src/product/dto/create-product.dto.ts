@@ -6,4 +6,5 @@ export class ProductDto {
   price: string;
   hashtag: Array<string>;
   _id: string;
+  id: string;
 }
