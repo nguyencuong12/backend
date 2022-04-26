@@ -24,6 +24,8 @@ export class AppController {
     // return this.appService.getHello();
   }
   @UseGuards(LocalAuthGuard)
+  //LOCAL AUTH GUARD
+  // DEFAULT REQUIRE (username,password) If not correct return Unauthorized ****
   @Post('auth/login')
   async login(@Res() res, @Req() req) {
     console.log('REQ COMMING !!!');
