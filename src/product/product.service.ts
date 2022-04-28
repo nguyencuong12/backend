@@ -28,7 +28,7 @@ export class ProductService {
     try {
       const newProduct = new this.productModel(product);
       console.log('NEW PRODUCT', newProduct);
-      return await newProduct.save();
+      return newProduct.save();
     } catch (err) {
       if (err.code === 11000) {
         throw new HttpException(
@@ -40,6 +40,9 @@ export class ProductService {
         );
       }
     }
+  }
+  async fetchTotalAmountProduct() {
+    return await this.productModel.find({});
   }
   async fetchHotProduct() {
     return await this.productModel.find({ hashtag: '#hot' }).exec();

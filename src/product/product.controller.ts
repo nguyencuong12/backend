@@ -49,6 +49,7 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log('PRODUCT', product);
     //OLD VERSION !!!
     // let hashtagString: string = product.hashtag.toString();
     // let hashtagArray: Array<string> = hashtagString.split(' ');
@@ -70,35 +71,49 @@ export class ProductController {
     // result.split(' ');
     product.hashtag = hashTag;
     product.id = uuid();
+
+    delete product._id;
+
+    // product.id = uuid();
     // console.log('PRODUCT HASHTAG', product.hashtag);
     // return response.status(HttpStatus.OK).json({ message: product });
-
     let status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ message: status });
   }
 
   @Post('/update')
   @UseInterceptors(
-    FileInterceptor('imageUpdate', {
-      limits: { fieldSize: 25 * 1025 * 1024 },
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename: string = file.originalname;
+          cb(null, filename);
+        },
+      }),
     }),
   )
   async updateProduct(
     @Res() response,
     @Body() product: ProductDto,
-    @UploadedFile() file: any,
+    @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log('UPDATE CALL');
     if (file) {
       let path = process.env.HOST + '/image/' + file.filename;
+      console.log('PATH', path);
       product.image = path;
     }
-    let hashTag = product.hashtag
-      .toString()
-      .replace(/\s+/g, ' ')
-      .trim()
-      .split(' ');
+    let hashTagArray = product.hashtag.toString().split(',');
+    // let hashTag = product.hashtag
+    //   .toString()
+    //   .replace(/\s+/g, ' ')
+    //   .trim()
+    //   .split(' ');
     // result.split(' ');
-    product.hashtag = hashTag;
+    // product.hashtag = hashTag;
+    product.hashtag = hashTagArray;
+    console.log('PRODUCT', product);
     const update = await this.productService.updateProduct(product);
     return response.status(HttpStatus.OK).json({ product: update });
   }
@@ -107,6 +122,11 @@ export class ProductController {
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
     const product = await this.productService.fetchProduct(params.id);
     return response.status(HttpStatus.OK).json({ product: product });
+  }
+  @Post('/total-amount')
+  async fetchTotalAmountProduct(@Res() res) {
+    const amount = await this.productService.fetchTotalAmountProduct();
+    return res.status(HttpStatus.OK).json({ total: amount.length });
   }
   @Delete()
   async deleteProduct(@Res() response, @Query() query) {
