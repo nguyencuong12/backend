@@ -30,11 +30,11 @@ export class ProductController {
   async fetchAllProduct(@Res() response, @Query() query) {
     let fontPage: number = query.currentPage || 1;
     const products = await this.productService.fetchAllProduct(fontPage);
-    return response.status(HttpStatus.OK).json({ products: products });
+    return response.status(HttpStatus.OK).json({ products });
   }
   @Post('')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('imageUpload', {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -49,20 +49,10 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log('PRODUCT', product);
-    //OLD VERSION !!!
-    // let hashtagString: string = product.hashtag.toString();
-    // let hashtagArray: Array<string> = hashtagString.split(' ');
-    // console.log('HASHTAG', hashtagArray);
-    // product.hashtag = hashtagArray;
-    // let base64 = Buffer.from(file.buffer).toString('base64');
-    // product.image = base64;
-    //NEW VERSION
     if (file) {
       let path = process.env.HOST + '/image/' + file.filename;
       product.image = path;
     }
-
     let hashTag = product.hashtag
       .toString()
       .replace(/\s+/g, ' ')
@@ -71,19 +61,15 @@ export class ProductController {
     // result.split(' ');
     product.hashtag = hashTag;
     product.id = uuid();
-
     delete product._id;
 
-    // product.id = uuid();
-    // console.log('PRODUCT HASHTAG', product.hashtag);
-    // return response.status(HttpStatus.OK).json({ message: product });
     let status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ message: status });
   }
 
   @Post('/update')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('imageUpload', {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -98,22 +84,15 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log('UPDATE CALL');
+    console.log('File Update', product);
     if (file) {
       let path = process.env.HOST + '/image/' + file.filename;
-      console.log('PATH', path);
+
       product.image = path;
     }
     let hashTagArray = product.hashtag.toString().split(',');
-    // let hashTag = product.hashtag
-    //   .toString()
-    //   .replace(/\s+/g, ' ')
-    //   .trim()
-    //   .split(' ');
-    // result.split(' ');
-    // product.hashtag = hashTag;
     product.hashtag = hashTagArray;
-    console.log('PRODUCT', product);
+
     const update = await this.productService.updateProduct(product);
     return response.status(HttpStatus.OK).json({ product: update });
   }
@@ -135,10 +114,9 @@ export class ProductController {
     const status = await this.productService.deleteProduct(id);
     return response.status(HttpStatus.OK).json({ status: status });
   }
-  @Post('hot/')
+  @Post('hot')
   async fetchHotProduct(@Res() response) {
     const products = await this.productService.fetchHotProduct();
-    console.log('CALL', products);
     return response.status(HttpStatus.OK).json({ products: products });
   }
 }
