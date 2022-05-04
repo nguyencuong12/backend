@@ -53,15 +53,17 @@ export class ProductController {
       let path = process.env.HOST + '/image/' + file.filename;
       product.image = path;
     }
-    let hashTag = product.hashtag
-      .toString()
-      .replace(/\s+/g, ' ')
-      .trim()
-      .split(' ');
+    let hashTag = product.hashtag.toString().split(',');
+    // let hashTag = product.hashtag
+    //   .toString()
+    //   .replace(/\s+/g, ' ')
+    //   .trim()
+    //   .split(' ');
     // result.split(' ');
     product.hashtag = hashTag;
     product.id = uuid();
     delete product._id;
+    console.log('hash tag', product.hashtag);
 
     let status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ message: status });
@@ -117,6 +119,12 @@ export class ProductController {
   @Post('hot')
   async fetchHotProduct(@Res() response) {
     const products = await this.productService.fetchHotProduct();
+    console.log('PRODUCT HOT', products);
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+  @Post('feature')
+  async fetchFeatureProduct(@Res() response) {
+    const products = await this.productService.fetchFeatureProduct();
     return response.status(HttpStatus.OK).json({ products: products });
   }
 }

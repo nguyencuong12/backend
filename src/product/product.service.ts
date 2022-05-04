@@ -55,6 +55,9 @@ export class ProductService {
       throw err;
     }
   }
+  async fetchFeatureProduct() {
+    return await this.productModel.find({ hashtag: '#feature' }).exec();
+  }
   async deleteProduct(id: string) {
     try {
       return await this.productModel.findByIdAndDelete(id).exec();
