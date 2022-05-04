@@ -14,15 +14,15 @@ import { MulterModule } from '@nestjs/platform-express';
 
 import { SearchModule } from './search/search.module';
 
-import { GuestModule } from './guest/guest.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+// import { GuestModule } from './guest/guest.module';
+// import { ServeStaticModule } from '@nestjs/serve-static';
+// import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { ImageModule } from './image/image.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './auth/local.strategy';
+// import { UsersModule } from './users/users.module';
+// import { PassportModule } from '@nestjs/passport';
+// import { LocalStrategy } from './auth/local.strategy';
 
 @Module({
   imports: [
@@ -39,7 +39,7 @@ import { LocalStrategy } from './auth/local.strategy';
     SearchModule,
     // GuestModule,
     ImageModule,
-    // AuthModule,
+    AuthModule,
     // UsersModule,
     // PassportModule,
     // UserModule,
