@@ -26,11 +26,8 @@ async function MailService(orderInfo, userInfo, totalPriceOrders) {
     <div>
     Sản phẩm đặt hàng ${orderInfo.map((instance) => {
       return `
-      (
         <br/>
         <p>${instance.title} với số lượng : ${instance.amount} </p>
-        <br/>
-      )
       `;
       // return `${instance.title} với số lượng : ${instance.amount}`;
     })}
