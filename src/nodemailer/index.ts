@@ -24,12 +24,21 @@ async function MailService(orderInfo, userInfo, totalPriceOrders) {
     html: `<b>Có đơn đặt hàng từ người dùng có tên : ${userInfo.FullName}
     </b>
     <div>
-    <p>
     Sản phẩm đặt hàng ${orderInfo.map((instance) => {
-      return `${instance.title} với số lượng : ${instance.amount}`;
+      return `
+      (
+        <br/>
+        <p>${instance.title} với số lượng : ${instance.amount} </p>
+        <br/>
+      )
+      `;
+      // return `${instance.title} với số lượng : ${instance.amount}`;
     })}
-    </p>
-  
+    </div>
+    <br />
+    <div>
+      <p>Số Điện Thoại : ${userInfo.PhoneNumber} </p>
+      <p>Địa Chỉ : ${userInfo.Address} </p>
     </div>
     <b>Tổng tiền của đơn đặt hàng  : ${totalPriceOrders}
     </b>
