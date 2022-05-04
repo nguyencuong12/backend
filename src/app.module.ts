@@ -14,7 +14,7 @@ import { MulterModule } from '@nestjs/platform-express';
 
 import { SearchModule } from './search/search.module';
 
-// import { GuestModule } from './guest/guest.module';
+import { GuestModule } from './guest/guest.module';
 // import { ServeStaticModule } from '@nestjs/serve-static';
 // import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
@@ -37,7 +37,7 @@ import { ImageModule } from './image/image.module';
     }),
     ProductModule,
     SearchModule,
-    // GuestModule,
+    GuestModule,
     ImageModule,
 
     // UsersModule,
