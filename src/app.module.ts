@@ -36,17 +36,16 @@ import { LocalStrategy } from './auth/local.strategy';
       // limits: { fileSize: 25 * 1025 * 1024 * 200 },
     }),
     ProductModule,
-
     SearchModule,
-    GuestModule,
+    // GuestModule,
     ImageModule,
-    AuthModule,
-    UsersModule,
-    PassportModule,
+    // AuthModule,
+    // UsersModule,
+    // PassportModule,
     // UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, LocalStrategy],
+  providers: [AppService /*LocalStrategy*/],
 })
 export class AppModule {}
 
