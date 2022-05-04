@@ -19,7 +19,7 @@ import { SearchModule } from './search/search.module';
 // import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { ImageModule } from './image/image.module';
-import { AuthModule } from './auth/auth.module';
+// import { AuthModule } from './auth/auth.module';
 // import { UsersModule } from './users/users.module';
 // import { PassportModule } from '@nestjs/passport';
 // import { LocalStrategy } from './auth/local.strategy';
@@ -39,7 +39,7 @@ import { AuthModule } from './auth/auth.module';
     SearchModule,
     // GuestModule,
     ImageModule,
-    AuthModule,
+
     // UsersModule,
     // PassportModule,
     // UserModule,
