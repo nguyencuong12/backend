@@ -18,7 +18,7 @@ export class AppController {
 
   @Get()
   getHello(@Res() response): string {
-    let message = process.env.FRONTEND_URL;
+    let message = 'HELLO WORD';
     return response.status(HttpStatus.OK).json({ message: message });
 
     // return this.appService.getHello();
