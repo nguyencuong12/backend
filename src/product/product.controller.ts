@@ -127,4 +127,16 @@ export class ProductController {
     const products = await this.productService.fetchFeatureProduct();
     return response.status(HttpStatus.OK).json({ products: products });
   }
+  @Post('vitamins')
+  async fetchVitaminProduct(@Res() response, @Body() body) {
+    console.log('BODY', body.currentPage);
+    const products = await this.productService.fetchVitamin(
+      parseInt(body.currentPage),
+    );
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+  // async fetchFeatureProduct(@Res() response) {
+  //   const products = await this.productService.fetchFeatureProduct();
+  //   return response.status(HttpStatus.OK).json({ products: products });
+  // }
 }

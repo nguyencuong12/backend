@@ -4,6 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Guest, GuestDocument } from './guest.schema';
 import { Model } from 'mongoose';
 import MailService from 'src/nodemailer';
+const login = require('facebook-chat-api');
+
 @Injectable()
 export class GuestService {
   constructor(

@@ -27,14 +27,7 @@ import { ImageModule } from './image/image.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', '/uploads'),
-    // }),
     MongooseModule.forRoot('mongodb://localhost:27017/sashimeomeo'),
-    MulterModule.register({
-      limits: { fieldSize: 25 * 1025 * 1024 },
-      // limits: { fileSize: 25 * 1025 * 1024 * 200 },
-    }),
     ProductModule,
     SearchModule,
     GuestModule,

@@ -6,7 +6,9 @@ export class SearchController {
   @Get()
   async test(@Res() response, @Query() query) {
     let { searchField } = query;
+
     let result = await this.searchService.excuteSearch(searchField);
+
     return response.status(HttpStatus.OK).json({ searchResults: result });
     // return response.status(HttpStatus.OK).json({ test: 'Hello' });
   }

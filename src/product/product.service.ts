@@ -47,6 +47,39 @@ export class ProductService {
   async fetchHotProduct() {
     return await this.productModel.find({ hashtag: '#hot' }).exec();
   }
+  async fetchVitamin(page: number) {
+    // let productAmount = await this.productModel.countDocuments();
+    const query = this.productModel.find({
+      type: 'vitamin',
+      skip: 10,
+      limit: 3,
+    });
+    let productAmount = await this.productModel.find({ type: 'vitamin' });
+    // const pageSelect: number = page || 1;
+    const limit: number = 4;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    return { product: data, count: productAmount.length };
+    // const query = await this.productModel.find({
+    //   type: 'vitamins',
+    //   skip: 10,
+    //   limit: 3,
+    // });
+    // const pageSelect: number = page;
+    // const limit: number = 4;
+    // const data = await query
+    //   .skip((pageSelect - 1) * limit)
+    //   .limit(limit)
+    //   .exec();
+
+    // const data = await query
+    //   .skip((page - 1) * limit)
+    //   .limit(limit)
+    //   .exec();
+    // .exec();
+  }
   async fetchProduct(id: string) {
     try {
       return await this.productModel.findById(id);

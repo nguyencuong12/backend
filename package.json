@@ -33,6 +33,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/passport": "^1.0.7",
     "bcrypt": "^5.0.1",
+    "facebook-chat-api": "^1.8.0",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.5",
     "nodemailer": "^6.7.3",
