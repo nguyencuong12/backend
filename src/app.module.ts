@@ -19,6 +19,7 @@ import { GuestModule } from './guest/guest.module';
 // import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { ImageModule } from './image/image.module';
+import { AuthModule } from './auth/auth.module';
 // import { AuthModule } from './auth/auth.module';
 // import { UsersModule } from './users/users.module';
 // import { PassportModule } from '@nestjs/passport';
@@ -32,6 +33,7 @@ import { ImageModule } from './image/image.module';
     SearchModule,
     GuestModule,
     ImageModule,
+    AuthModule,
 
     // UsersModule,
     // PassportModule,

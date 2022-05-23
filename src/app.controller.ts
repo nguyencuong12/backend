@@ -10,8 +10,10 @@ import {
 } from '@nestjs/common';
 // import { AppService } from './app.service';
 // import { AuthService } from './auth/auth.service';
-import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './auth/local-auth.guard';
+
+import { AuthGuard } from '@nestjs/passport';
+
 @Controller()
 export class AppController {
   // constructor(private readonly authService: AuthService) {}
@@ -21,19 +23,8 @@ export class AppController {
     let message = 'HELLO WORD';
     return response.status(HttpStatus.OK).json({ message: message });
 
-    // return this.appService.getHello();
+    // return t
+
+    // this.appService.getHello();
   }
-  // @UseGuards(LocalAuthGuard)
-  // @Post('auth/login')
-  // async login(@Res() res, @Req() req) {
-  //   console.log('REQ COMMING !!!');
-  //   // return req.user;
-  //   // console.log('ABC');
-  //   let access_token = await this.authService.login(req.user);
-  //   console.log('ACCRESS_TOKEN', access_token);
-
-  //   return res.status(HttpStatus.OK).json({ user: req.user });
-
-  //   // return res.status(HttpStatus.OK).json({ access_token: access_token });
-  // }
 }

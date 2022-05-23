@@ -129,7 +129,6 @@ export class ProductController {
   }
   @Post('vitamins')
   async fetchVitaminProduct(@Res() response, @Body() body) {
-    console.log('BODY', body.currentPage);
     const products = await this.productService.fetchVitamin(
       parseInt(body.currentPage),
     );
