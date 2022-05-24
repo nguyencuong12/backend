@@ -3,7 +3,8 @@ db = conn.getDB('sashimeomeo');
 
 var object = {
   username: 'admin',
-  password: '$2a$12$Y0h99ySzH17otZ4Z..lM8uDGN1hT2GW0MxCdOX93TsZiZmNcJdKz',
+  password:
+    'eyJhbGciOiJIUzI1NiJ9.bmd1eWVuY3VvbmdBejE.qBigHpbPSMB-O3eCa6ahyU1iGc0jUQMqt4ZSQbbqFYs',
   role: ['admin'],
 };
 db.users.insert(object);
