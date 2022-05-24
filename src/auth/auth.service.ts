@@ -19,7 +19,6 @@ export class AuthService {
     const payload = { username: user.username, password: user.password };
     return {
       access_token: this.jwtService.sign(payload),
-      // password_sign: this.jwtService.decode(payload.password),
     };
   }
 }

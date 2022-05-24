@@ -9,20 +9,10 @@ import { User, UserDocument } from './users.schema';
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'admin',
-      password: 'nguyencuongAz1',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
   async findOne(username: string) {
-    return this.userModel.findOne({ username: username }).exec();
+    const user = await this.userModel.findOne({ username: username }).exec();
+    if (user && user.role[0] === 'admin') {
+      return user;
+    }
   }
 }
