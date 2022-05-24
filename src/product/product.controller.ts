@@ -12,6 +12,7 @@ import {
   UploadedFile,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 // import { Express } from 'express';
 
@@ -21,17 +22,22 @@ import { Product } from './product.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductDto } from './dto/create-product.dto';
 import { diskStorage } from 'multer';
+import { AuthenticatedGuard } from 'src/auth/auth.guard';
 const { uuid } = require('uuidv4');
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
+  // @UseGuards(AuthenticatedGuard)
   @Get()
   async fetchAllProduct(@Res() response, @Query() query) {
     let fontPage: number = query.currentPage || 1;
     const products = await this.productService.fetchAllProduct(fontPage);
     return response.status(HttpStatus.OK).json({ products });
   }
+
+  @UseGuards(AuthenticatedGuard)
   @Post('')
   @UseInterceptors(
     FileInterceptor('imageUpload', {
@@ -69,6 +75,7 @@ export class ProductController {
     return response.status(HttpStatus.OK).json({ message: status });
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Post('/update')
   @UseInterceptors(
     FileInterceptor('imageUpload', {
@@ -109,6 +116,8 @@ export class ProductController {
     const amount = await this.productService.fetchTotalAmountProduct();
     return res.status(HttpStatus.OK).json({ total: amount.length });
   }
+
+  @UseGuards(AuthenticatedGuard)
   @Delete()
   async deleteProduct(@Res() response, @Query() query) {
     console.log('pamrams', query);
