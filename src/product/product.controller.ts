@@ -29,7 +29,6 @@ const { uuid } = require('uuidv4');
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  // @UseGuards(AuthenticatedGuard)
   @Get()
   async fetchAllProduct(@Res() response, @Query() query) {
     let fontPage: number = query.currentPage || 1;
