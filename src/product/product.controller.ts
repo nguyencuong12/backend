@@ -135,13 +135,13 @@ export class ProductController {
     const products = await this.productService.fetchFeatureProduct();
     return response.status(HttpStatus.OK).json({ products: products });
   }
-  @Post('foods')
+  @Post('cat/foods')
   async fetchFoodProducts(@Res() response) {
     const products = await this.productService.fetchFoodProducts();
     return response.status(HttpStatus.OK).json({ products: products });
   }
 
-  @Post('vitamins')
+  @Post('cat/vitamins')
   async fetchVitaminProduct(@Res() response, @Body() body) {
     const products = await this.productService.fetchVitamin(
       parseInt(body.currentPage),
