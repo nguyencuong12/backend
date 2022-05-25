@@ -135,11 +135,38 @@ export class ProductController {
     const products = await this.productService.fetchFeatureProduct();
     return response.status(HttpStatus.OK).json({ products: products });
   }
+  @Post('foods')
+  async fetchFoodProducts(@Res() response) {
+    const products = await this.productService.fetchFoodProducts();
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+
   @Post('vitamins')
   async fetchVitaminProduct(@Res() response, @Body() body) {
     const products = await this.productService.fetchVitamin(
       parseInt(body.currentPage),
     );
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+  @Post('cat/breeds')
+  async fetchCatBreeds(@Res() response, @Body() body) {
+    const products = await this.productService.fetchCatBreeds();
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+
+  @Post('cat/seeds')
+  async fetchCatSeeds(@Res() response, @Body() body) {
+    const products = await this.productService.fetchCatSeeds();
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+  @Post('cat/pate')
+  async fetchCatPate(@Res() response, @Body() body) {
+    const products = await this.productService.fetchCatPate();
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+  @Post('cat/toys')
+  async fetchCatToys(@Res() response, @Body() body) {
+    const products = await this.productService.fetchToys();
     return response.status(HttpStatus.OK).json({ products: products });
   }
   // async fetchFeatureProduct(@Res() response) {

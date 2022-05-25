@@ -71,8 +71,23 @@ export class ProductService {
       throw err;
     }
   }
+  async fetchFoodProducts() {
+    return await this.productModel.find({ hashtag: '#food' }).exec();
+  }
   async fetchFeatureProduct() {
     return await this.productModel.find({ hashtag: '#feature' }).exec();
+  }
+  async fetchCatBreeds() {
+    return await this.productModel.find({ type: 'breed' }).exec();
+  }
+  async fetchCatSeeds() {
+    return await this.productModel.find({ type: 'seed' }).exec();
+  }
+  async fetchCatPate() {
+    return await this.productModel.find({ type: 'pate' }).exec();
+  }
+  async fetchToys() {
+    return await this.productModel.find({ type: 'toys' }).exec();
   }
   async deleteProduct(id: string) {
     try {
