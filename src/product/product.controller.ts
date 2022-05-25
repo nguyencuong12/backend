@@ -136,8 +136,10 @@ export class ProductController {
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('cat/foods')
-  async fetchFoodProducts(@Res() response) {
-    const products = await this.productService.fetchFoodProducts();
+  async fetchFoodProducts(@Res() response, @Body() body) {
+    const products = await this.productService.fetchFoodProducts(
+      parseInt(body.currentPage),
+    );
     return response.status(HttpStatus.OK).json({ products: products });
   }
 

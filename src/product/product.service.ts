@@ -71,8 +71,22 @@ export class ProductService {
       throw err;
     }
   }
-  async fetchFoodProducts() {
-    return await this.productModel.find({ hashtag: '#food' }).exec();
+  async fetchFoodProducts(page: number) {
+    const query = this.productModel.find({
+      hashtag: '#food',
+      skip: 10,
+      limit: 3,
+    });
+    let productAmount = await this.productModel.find({ hashtag: '#food' });
+    // const pageSelect: number = page || 1;
+    const limit: number = 4;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    return { product: data, count: productAmount.length };
+
+    // return await this.productModel.find({ hashtag: '#food' }).exec();
   }
   async fetchFeatureProduct() {
     return await this.productModel.find({ hashtag: '#feature' }).exec();
