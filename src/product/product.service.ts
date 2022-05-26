@@ -91,17 +91,67 @@ export class ProductService {
   async fetchFeatureProduct() {
     return await this.productModel.find({ hashtag: '#feature' }).exec();
   }
-  async fetchCatBreeds() {
-    return await this.productModel.find({ type: 'breed' }).exec();
+  async fetchCatBreeds(page: number) {
+    const query = this.productModel.find({
+      type: 'breed',
+      skip: 10,
+      limit: 3,
+    });
+    let productAmount = await this.productModel.find({ type: 'breed' });
+    // const pageSelect: number = page || 1;
+    const limit: number = 4;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    return { product: data, count: productAmount.length };
+
+    // return await this.productModel.find({ type: 'breed' }).exec();
   }
-  async fetchCatSeeds() {
-    return await this.productModel.find({ type: 'seed' }).exec();
+  async fetchCatSeeds(page: number) {
+    const query = this.productModel.find({
+      type: 'seed',
+      skip: 10,
+      limit: 3,
+    });
+    let productAmount = await this.productModel.find({ type: 'seed' });
+    // const pageSelect: number = page || 1;
+    const limit: number = 4;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    return { product: data, count: productAmount.length };
   }
-  async fetchCatPate() {
-    return await this.productModel.find({ type: 'pate' }).exec();
+  async fetchCatPate(page: number) {
+    const query = this.productModel.find({
+      type: 'pate',
+      skip: 10,
+      limit: 3,
+    });
+    let productAmount = await this.productModel.find({ type: 'pate' });
+    // const pageSelect: number = page || 1;
+    const limit: number = 4;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    return { product: data, count: productAmount.length };
   }
-  async fetchToys() {
-    return await this.productModel.find({ type: 'toys' }).exec();
+  async fetchToys(page: number) {
+    const query = this.productModel.find({
+      type: 'toys',
+      skip: 10,
+      limit: 3,
+    });
+    let productAmount = await this.productModel.find({ type: 'toys' });
+    // const pageSelect: number = page || 1;
+    const limit: number = 4;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    return { product: data, count: productAmount.length };
   }
   async deleteProduct(id: string) {
     try {

@@ -152,23 +152,31 @@ export class ProductController {
   }
   @Post('cat/breeds')
   async fetchCatBreeds(@Res() response, @Body() body) {
-    const products = await this.productService.fetchCatBreeds();
+    const products = await this.productService.fetchCatBreeds(
+      parseInt(body.currentPage),
+    );
     return response.status(HttpStatus.OK).json({ products: products });
   }
 
   @Post('cat/seeds')
   async fetchCatSeeds(@Res() response, @Body() body) {
-    const products = await this.productService.fetchCatSeeds();
+    const products = await this.productService.fetchCatSeeds(
+      parseInt(body.currentPage),
+    );
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('cat/pate')
   async fetchCatPate(@Res() response, @Body() body) {
-    const products = await this.productService.fetchCatPate();
+    const products = await this.productService.fetchCatPate(
+      parseInt(body.currentPage),
+    );
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('cat/toys')
   async fetchCatToys(@Res() response, @Body() body) {
-    const products = await this.productService.fetchToys();
+    const products = await this.productService.fetchToys(
+      parseInt(body.currentPage),
+    );
     return response.status(HttpStatus.OK).json({ products: products });
   }
   // async fetchFeatureProduct(@Res() response) {
