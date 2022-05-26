@@ -153,6 +153,21 @@ export class ProductService {
       .exec();
     return { product: data, count: productAmount.length };
   }
+  async fetchCatClothes(page: number) {
+    const query = this.productModel.find({
+      type: 'clothes',
+      skip: 10,
+      limit: 3,
+    });
+    let productAmount = await this.productModel.find({ type: 'clothes' });
+    // const pageSelect: number = page || 1;
+    const limit: number = 4;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    return { product: data, count: productAmount.length };
+  }
   async deleteProduct(id: string) {
     try {
       return await this.productModel.findByIdAndDelete(id).exec();
@@ -160,6 +175,7 @@ export class ProductService {
       throw new err();
     }
   }
+
   async updateProduct(product: ProductDto) {
     const filter = { _id: product._id };
     try {

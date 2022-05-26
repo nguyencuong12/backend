@@ -172,6 +172,14 @@ export class ProductController {
     );
     return response.status(HttpStatus.OK).json({ products: products });
   }
+
+  @Post('cat/clothes')
+  async fetchCatClothes(@Res() response, @Body() body) {
+    const products = await this.productService.fetchCatClothes(
+      parseInt(body.currentPage),
+    );
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
   @Post('cat/toys')
   async fetchCatToys(@Res() response, @Body() body) {
     const products = await this.productService.fetchToys(
