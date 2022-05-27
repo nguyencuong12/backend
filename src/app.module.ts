@@ -24,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
 // import { UsersModule } from './users/users.module';
 // import { PassportModule } from '@nestjs/passport';
 // import { LocalStrategy } from './auth/local.strategy';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AuthModule } from './auth/auth.module';
     GuestModule,
     ImageModule,
     AuthModule,
+    AdminModule,
 
     // UsersModule,
     // PassportModule,
