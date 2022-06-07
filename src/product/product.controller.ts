@@ -39,7 +39,7 @@ export class ProductController {
   @UseGuards(AuthenticatedGuard)
   @Post('')
   @UseInterceptors(
-    FileInterceptor('imageUpload', {
+    FileInterceptor('image', {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -77,7 +77,7 @@ export class ProductController {
   @UseGuards(AuthenticatedGuard)
   @Post('/update')
   @UseInterceptors(
-    FileInterceptor('imageUpload', {
+    FileInterceptor('image', {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -94,8 +94,13 @@ export class ProductController {
   ) {
     console.log('File Update', product);
     if (file) {
+      console.log('FILE', file);
+      // fs.unlink('./uploads/loading.gif', function (err) {
+      //   if (err) throw err;
+      //   // if no error, file has been deleted successfully
+      //   console.log('File deleted!');
+      // });
       let path = process.env.HOST + '/image/' + file.filename;
-
       product.image = path;
     }
     let hashTagArray = product.hashtag.toString().split(',');
