@@ -7,4 +7,5 @@ export class ProductDto {
   hashtag: Array<string>;
   _id: string;
   id: string;
+  updateProduct?: boolean;
 }

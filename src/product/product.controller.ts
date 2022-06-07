@@ -92,16 +92,10 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log('File Update', product);
     if (file) {
-      console.log('FILE', file);
-      // fs.unlink('./uploads/loading.gif', function (err) {
-      //   if (err) throw err;
-      //   // if no error, file has been deleted successfully
-      //   console.log('File deleted!');
-      // });
       let path = process.env.HOST + '/image/' + file.filename;
       product.image = path;
+      product.updateProduct = true;
     }
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
