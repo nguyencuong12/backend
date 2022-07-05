@@ -22,7 +22,7 @@ export class ProductService {
       .limit(limit)
       .exec();
     // console.log('data', data);
-    return { product: data, count: productAmount };
+    return { _productList: data, count: productAmount };
     // return await this.productModel.find().exec();
   }
   async createProduct(product: Product) {

@@ -25,7 +25,7 @@ import { diskStorage } from 'multer';
 import { AuthenticatedGuard } from 'src/auth/auth.guard';
 const { uuid } = require('uuidv4');
 
-@Controller('product')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
@@ -33,13 +33,15 @@ export class ProductController {
   async fetchAllProduct(@Res() response, @Query() query) {
     let fontPage: number = query.currentPage || 1;
     const products = await this.productService.fetchAllProduct(fontPage);
-    return response.status(HttpStatus.OK).json({ products });
+    // return response.status(HttpStatus.OK).json({ products });
+
+    return response.status(HttpStatus.OK).json({ products: products });
   }
 
   @UseGuards(AuthenticatedGuard)
-  @Post('')
+  @Post('/')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('imageUpload', {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -54,6 +56,7 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log('CREATE PRODUCTS CALL ');
     if (file) {
       let path = process.env.HOST + '/image/' + file.filename;
       product.image = path;
@@ -92,6 +95,8 @@ export class ProductController {
     @Body() product: ProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log('UPDATE PRODUCTS CALL ');
+
     if (file) {
       let path = process.env.HOST + '/image/' + file.filename;
       product.image = path;
@@ -128,6 +133,15 @@ export class ProductController {
     const products = await this.productService.fetchHotProduct();
     console.log('PRODUCT HOT', products);
     return response.status(HttpStatus.OK).json({ products: products });
+  }
+  @Post('best-sale')
+  async fetchBestSaleProducts(@Res() response) {
+    return response
+      .status(HttpStatus.OK)
+      .json({ products: 'Best Sale Products' });
+    // const products = await this.productService.fetchHotProduct();
+    // console.log('PRODUCT HOT', products);
+    // return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('feature')
   async fetchFeatureProduct(@Res() response) {
