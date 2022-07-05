@@ -182,12 +182,12 @@ export class ProductService {
     try {
       if (product.updateProduct) {
         let result = await this.productModel.findById(filter._id);
-        var filename = result.image.replace(/^.*[\\\/]/, '');
-        fs.unlink(`./uploads/${filename}`, function (err) {
-          if (err) throw err;
-          // if no error, file has been deleted successfully
-          console.log('File deleted!');
-        });
+        // var filename = result.image.replace(/^.*[\\\/]/, '');
+        // fs.unlink(`./uploads/${filename}`, function (err) {
+        //   if (err) throw err;
+        //   // if no error, file has been deleted successfully
+        //   console.log('File deleted!');
+        // });
       }
       return await this.productModel.findOneAndUpdate(filter, product, {
         new: true,

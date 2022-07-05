@@ -13,13 +13,14 @@ import {
   Put,
   Query,
   UseGuards,
+  UploadedFiles,
 } from '@nestjs/common';
 // import { Express } from 'express';
 
 import path = require('path');
 import { ProductService } from './product.service';
 import { Product } from './product.schema';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ProductDto } from './dto/create-product.dto';
 import { diskStorage } from 'multer';
 import { AuthenticatedGuard } from 'src/auth/auth.guard';
@@ -39,9 +40,9 @@ export class ProductController {
   }
 
   @UseGuards(AuthenticatedGuard)
-  @Post('/')
+  @Post('')
   @UseInterceptors(
-    FileInterceptor('imageUpload', {
+    FilesInterceptor('image', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -54,33 +55,39 @@ export class ProductController {
   async createProduct(
     @Res() response,
     @Body() product: ProductDto,
-    @UploadedFile() file: Express.Multer.File,
+    // @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    console.log('CREATE PRODUCTS CALL ');
-    if (file) {
-      let path = process.env.HOST + '/image/' + file.filename;
-      product.image = path;
+    // if (file) {
+    //   let path = process.env.HOST + '/image/' + file.filename;
+    //   product.image = path;
+    // }
+
+    if (files) {
+      console.log('FILES', files);
+      let arr = [];
+      files.forEach((element) => {
+        arr.push(process.env.HOST + '/image/' + element.filename);
+      });
+      // console.log('Arr', arr);
+      product.image = arr;
     }
+
     let hashTag = product.hashtag.toString().split(',');
-    // let hashTag = product.hashtag
-    //   .toString()
-    //   .replace(/\s+/g, ' ')
-    //   .trim()
-    //   .split(' ');
-    // result.split(' ');
+
     product.hashtag = hashTag;
     product.id = uuid();
     delete product._id;
-    console.log('hash tag', product.hashtag);
 
     let status = await this.productService.createProduct(product);
+
     return response.status(HttpStatus.OK).json({ message: status });
   }
 
   @UseGuards(AuthenticatedGuard)
   @Post('/update')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FilesInterceptor('image', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -93,18 +100,20 @@ export class ProductController {
   async updateProduct(
     @Res() response,
     @Body() product: ProductDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    console.log('UPDATE PRODUCTS CALL ');
-
-    if (file) {
-      let path = process.env.HOST + '/image/' + file.filename;
-      product.image = path;
+    if (files) {
+      let arr = [];
+      files.forEach((element) => {
+        arr.push(process.env.HOST + '/image/' + element.filename);
+      });
+      // console.log('Arr', arr);
+      product.image = arr;
+      // product.image = path;
       product.updateProduct = true;
     }
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
-
     const update = await this.productService.updateProduct(product);
     return response.status(HttpStatus.OK).json({ product: update });
   }
