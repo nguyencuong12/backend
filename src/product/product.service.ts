@@ -180,18 +180,26 @@ export class ProductService {
   async updateProduct(product: ProductDto) {
     const filter = { _id: product._id };
     try {
-      if (product.updateProduct) {
-        let result = await this.productModel.findById(filter._id);
-        // var filename = result.image.replace(/^.*[\\\/]/, '');
-        // fs.unlink(`./uploads/${filename}`, function (err) {
-        //   if (err) throw err;
-        //   // if no error, file has been deleted successfully
-        //   console.log('File deleted!');
-        // });
-      }
-      return await this.productModel.findOneAndUpdate(filter, product, {
-        new: true,
-      });
+      // if (product.updateProduct) {
+      //   // let result = await this.productModel.findById(filter._id);
+
+      //   // var filename = result.image.replace(/^.*[\\\/]/, '');
+      //   // fs.unlink(`./uploads/${filename}`, function (err) {
+      //   //   if (err) throw err;
+      //   //   // if no error, file has been deleted successfully
+      //   //   console.log('File deleted!');
+      //   // });
+      // }
+
+      let recent = await this.productModel.findById(filter._id);
+      product.image = recent.image;
+      // recent = product;
+      console.log('PRODUCT UPDATE ', product);
+      return await this.productModel.findOneAndUpdate(filter, product);
+
+      // return await this.productModel.findOneAndUpdate(filter, product, {
+      //   new: true,
+      // });
     } catch (err) {
       throw new err();
     }

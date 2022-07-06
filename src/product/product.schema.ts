@@ -19,6 +19,8 @@ export class Product {
   price: string;
   @Prop()
   hashtag: Array<string>;
+  @Prop()
+  colors: Array<string>;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

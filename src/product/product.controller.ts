@@ -62,7 +62,6 @@ export class ProductController {
     //   let path = process.env.HOST + '/image/' + file.filename;
     //   product.image = path;
     // }
-
     if (files) {
       console.log('FILES', files);
       let arr = [];
@@ -74,13 +73,10 @@ export class ProductController {
     }
 
     let hashTag = product.hashtag.toString().split(',');
-
     product.hashtag = hashTag;
     product.id = uuid();
     delete product._id;
-
     let status = await this.productService.createProduct(product);
-
     return response.status(HttpStatus.OK).json({ message: status });
   }
 
@@ -110,11 +106,12 @@ export class ProductController {
       // console.log('Arr', arr);
       product.image = arr;
       // product.image = path;
-      product.updateProduct = true;
+      // product.updateProduct = true;
     }
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
     const update = await this.productService.updateProduct(product);
+    console.log('UPDATE', update);
     return response.status(HttpStatus.OK).json({ product: update });
   }
 
