@@ -194,7 +194,7 @@ export class ProductService {
       let recent = await this.productModel.findById(filter._id);
       product.image = recent.image;
       // recent = product;
-      console.log('PRODUCT UPDATE ', product);
+      // console.log('PRODUCT UPDATE ', product);
       return await this.productModel.findOneAndUpdate(filter, product);
 
       // return await this.productModel.findOneAndUpdate(filter, product, {

@@ -55,19 +55,15 @@ export class ProductController {
   async createProduct(
     @Res() response,
     @Body() product: ProductDto,
-    // @UploadedFile() file: Express.Multer.File,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    // if (file) {
-    //   let path = process.env.HOST + '/image/' + file.filename;
-    //   product.image = path;
-    // }
     if (files) {
       console.log('FILES', files);
       let arr = [];
       files.forEach((element) => {
         arr.push(process.env.HOST + '/image/' + element.filename);
       });
+      console.log('CALL CREATE !!!');
       // console.log('Arr', arr);
       product.image = arr;
     }
@@ -108,10 +104,11 @@ export class ProductController {
       // product.image = path;
       // product.updateProduct = true;
     }
+    console.log('UPDATE PRODUCT', product);
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
     const update = await this.productService.updateProduct(product);
-    console.log('UPDATE', update);
+    // console.log('UPDATE', update);
     return response.status(HttpStatus.OK).json({ product: update });
   }
 
