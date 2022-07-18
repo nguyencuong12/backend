@@ -139,9 +139,9 @@ export class ProductController {
   }
   @Post('best-sale')
   async fetchBestSaleProducts(@Res() response) {
-    return response
-      .status(HttpStatus.OK)
-      .json({ products: 'Best Sale Products' });
+    console.log("CALL !!")
+    const products = await this.productService.fetchBestSaleProducts();
+    return response.status(HttpStatus.OK).json({ products: products });
     // const products = await this.productService.fetchHotProduct();
     // console.log('PRODUCT HOT', products);
     // return response.status(HttpStatus.OK).json({ products: products });

@@ -48,6 +48,9 @@ export class ProductService {
   async fetchHotProduct() {
     return await this.productModel.find({ hashtag: '#hot' }).exec();
   }
+  async fetchBestSaleProducts() {
+    return await this.productModel.find({ hashtag: '#bestsale' }).exec();
+  }
   async fetchVitamin(page: number) {
     // let productAmount = await this.productModel.countDocuments();
     const query = this.productModel.find({
