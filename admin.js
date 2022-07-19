@@ -1,5 +1,5 @@
 let conn = new Mongo();
-db = conn.getDB('sashimeomeo');
+db = conn.getDB('gasanhkiet');
 
 var object = {
   username: 'admin',

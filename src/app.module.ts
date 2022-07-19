@@ -29,7 +29,7 @@ import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot('mongodb://localhost:27017/sashimeomeo'),
+    MongooseModule.forRoot('mongodb://localhost:27017/gasanhkiet'),
     ProductModule,
     SearchModule,
     GuestModule,
