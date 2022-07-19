@@ -179,6 +179,10 @@ export class ProductService {
       throw new err();
     }
   }
+  async fetchProductsFromType (type:string){
+     let products = await this.productModel.find({ type: type });
+    return products;
+  }
 
   async updateProduct(product: ProductDto) {
     const filter = { _id: product._id };

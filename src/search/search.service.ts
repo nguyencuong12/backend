@@ -9,18 +9,20 @@ export class SearchService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
   ) {}
   async excuteSearch(searchField: string) {
+    
     // let searchLow = searchField.toLowerCase();
     return await this.productModel
       .find({
         $or: [
           { title: { $regex: searchField, $options: 'i' } },
+          { hashtag: { $regex: searchField, $options: 'i' } },
           {
             type: {
               $regex: searchField,
               $options: 'i',
             },
           },
-          { hashtag: { $regex: searchField, $options: 'i' } },
+        
         ],
       })
       .exec();

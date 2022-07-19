@@ -28,7 +28,7 @@ const { uuid } = require('uuidv4');
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Get()
   async fetchAllProduct(@Res() response, @Query() query) {
@@ -151,6 +151,24 @@ export class ProductController {
     const products = await this.productService.fetchFeatureProduct();
     return response.status(HttpStatus.OK).json({ products: products });
   }
+  @Post('gas-anhkiet')
+  async fetchGasAnhKiet(@Res() response) {
+    const products = await this.productService.fetchProductsFromType("gas-anhkiet");
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+  @Post('bep-gas')
+  async fetchBepGas(@Res() response) {
+  
+    const products = await this.productService.fetchProductsFromType("bep-gas");
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+  @Post('day-gas')
+  async fetchDayGas(@Res() response ) {
+    
+    const products = await this.productService.fetchProductsFromType("day-gas");
+    return response.status(HttpStatus.OK).json({ products: products });
+  }
+
   @Post('cat/foods')
   async fetchFoodProducts(@Res() response, @Body() body) {
     const products = await this.productService.fetchFoodProducts(
