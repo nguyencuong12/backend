@@ -25,6 +25,8 @@ import { AuthModule } from './auth/auth.module';
 // import { PassportModule } from '@nestjs/passport';
 // import { LocalStrategy } from './auth/local.strategy';
 import { AdminModule } from './admin/admin.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './exceptions/http-exception.filter';
 
 @Module({
   imports: [
@@ -42,7 +44,10 @@ import { AdminModule } from './admin/admin.module';
     // UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService /*LocalStrategy*/],
+  providers: [
+    AppService /*LocalStrategy*/,
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
+  ],
 })
 export class AppModule {}
 
