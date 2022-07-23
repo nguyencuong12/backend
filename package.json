@@ -36,6 +36,7 @@
     "facebook-chat-api": "^1.8.0",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.5",
+    "morgan": "^1.10.0",
     "nodemailer": "^6.7.3",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
