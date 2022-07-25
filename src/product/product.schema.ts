@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-
+import { productImages } from './interfaces/productInterface';
 export type ProductDocument = Product & Document;
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false,
+})
 export class Product {
   @Prop({ unique: true })
   id: string;
@@ -14,7 +15,8 @@ export class Product {
   @Prop()
   type: string;
   @Prop()
-  image: Array<string>;
+  // image: Array<string>;
+  image:Array<productImages>
   @Prop()
   price: string;
   @Prop()
@@ -22,6 +24,5 @@ export class Product {
   @Prop()
   colors: Array<string>;
 }
-
 export const ProductSchema = SchemaFactory.createForClass(Product);
-// ProductSchema.index({ index: 'text' }, { unique: true });
+

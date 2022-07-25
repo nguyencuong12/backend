@@ -21,13 +21,10 @@ import { HttpExceptionFilter } from 'src/exceptions/http-exception.filter';
 export class AuthController {
   constructor(private authService: AuthService) {}
   @Post('/login')
-  @UseFilters(new HttpExceptionFilter())
   @UseGuards(LocalAuthGuard)
   async login(@Request() req, @Body() body) {
-    console.log('REQ', body);
     return this.authService.login(body);
   }
-
   @UseGuards(AuthenticatedGuard)
   @Get('/profile')
   async getProfile(@Res() res) {

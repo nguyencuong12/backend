@@ -2,13 +2,15 @@
 
 import {productImages} from '../interfaces/productInterface';
 
-export class ProductCreateDto{
+export class ProductUpdateDto {
   title: string;
   description: string;
   type: string;
-  image:productImages[];
+//   image:productImages[];
+  image:string[];
   price: string;
   hashtag: Array<string>;
+  _id: string;
   id: string;
   updateProduct?: boolean;
   colors: string[];

@@ -4,7 +4,10 @@ import { Model } from 'mongoose';
 import { Product, ProductDocument } from './product.schema';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
-import { ProductDto } from './dto/create-product.dto';
+// import { ProductDto } from './dto/create-product.dto';
+import {ProductUpdateDto} from './dto/update-product.dto';
+import {ProductCreateDto} from './dto/create-product.dto';
+
 
 @Injectable()
 export class ProductService {
@@ -25,10 +28,10 @@ export class ProductService {
     return { _productList: data, count: productAmount };
     // return await this.productModel.find().exec();
   }
-  async createProduct(product: Product) {
+  async createProduct(product:ProductCreateDto) {
     try {
+      console.log("CREATE PRODUCT CALL ",product);
       const newProduct = new this.productModel(product);
-      console.log('NEW PRODUCT', newProduct);
       return newProduct.save();
     } catch (err) {
       if (err.code === 11000) {
@@ -184,22 +187,12 @@ export class ProductService {
     return products;
   }
 
-  async updateProduct(product: ProductDto) {
+  async updateProduct(product: ProductUpdateDto) {
     const filter = { _id: product._id };
     try {
-      // if (product.updateProduct) {
-      //   // let result = await this.productModel.findById(filter._id);
-
-      //   // var filename = result.image.replace(/^.*[\\\/]/, '');
-      //   // fs.unlink(`./uploads/${filename}`, function (err) {
-      //   //   if (err) throw err;
-      //   //   // if no error, file has been deleted successfully
-      //   //   console.log('File deleted!');
-      //   // });
-      // }
-
+   
       let recent = await this.productModel.findById(filter._id);
-      product.image = recent.image;
+      // product.image = recent.image;
       // recent = product;
       // console.log('PRODUCT UPDATE ', product);
       return await this.productModel.findOneAndUpdate(filter, product);

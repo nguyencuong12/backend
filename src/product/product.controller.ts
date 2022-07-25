@@ -21,9 +21,12 @@ import path = require('path');
 import { ProductService } from './product.service';
 import { Product } from './product.schema';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { ProductDto } from './dto/create-product.dto';
+import { ProductCreateDto } from './dto/create-product.dto';
+import {ProductUpdateDto} from './dto/update-product.dto';
+
 import { diskStorage } from 'multer';
 import { AuthenticatedGuard } from 'src/auth/auth.guard';
+import { productImages } from './interfaces/productInterface';
 const { uuid } = require('uuidv4');
 
 @Controller('products')
@@ -32,6 +35,7 @@ export class ProductController {
 
   @Get()
   async fetchAllProduct(@Res() response, @Query() query) {
+    console.log("HOST",process.env.HOST);
     let fontPage: number = query.currentPage || 1;
     const products = await this.productService.fetchAllProduct(fontPage);
     // return response.status(HttpStatus.OK).json({ products });
@@ -54,24 +58,24 @@ export class ProductController {
   )
   async createProduct(
     @Res() response,
-    @Body() product: ProductDto,
+    @Body() product: ProductCreateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     if (files) {
-      console.log('FILES', files);
-      let arr = [];
+      let arr:productImages[] = [];
       files.forEach((element) => {
-        arr.push(process.env.HOST + '/image/' + element.filename);
+        arr.push(
+          {
+            id:uuid(),
+            path:process.env.HOST + "/image/" + element.filename
+          }
+          )
       });
-      console.log('CALL CREATE !!!');
-      // console.log('Arr', arr);
       product.image = arr;
     }
-
     let hashTag = product.hashtag.toString().split(',');
     product.hashtag = hashTag;
-    product.id = uuid();
-    delete product._id;
+    // product.id = uuid();
     let status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ message: status });
   }
@@ -91,7 +95,7 @@ export class ProductController {
   )
   async updateProduct(
     @Res() response,
-    @Body() product: ProductDto,
+    @Body() product: ProductUpdateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     if (files) {
@@ -99,17 +103,15 @@ export class ProductController {
       files.forEach((element) => {
         arr.push(process.env.HOST + '/image/' + element.filename);
       });
-      // console.log('Arr', arr);
       product.image = arr;
-      // product.image = path;
-      // product.updateProduct = true;
+  
     }
-    console.log('UPDATE PRODUCT', product);
+
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
-    const update = await this.productService.updateProduct(product);
-    // console.log('UPDATE', update);
-    return response.status(HttpStatus.OK).json({ product: update });
+    // const update = await this.productService.updateProduct(product);
+
+    // return response.status(HttpStatus.OK).json({ product: update });
   }
 
   @Get(':id')
