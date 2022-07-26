@@ -27,12 +27,14 @@ import {ProductUpdateDto} from './dto/update-product.dto';
 import { diskStorage } from 'multer';
 import { AuthenticatedGuard } from 'src/auth/auth.guard';
 import { productImages } from './interfaces/productInterface';
+import * as sharp from 'sharp';
 const { uuid } = require('uuidv4');
+
+
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
-
   @Get()
   async fetchAllProduct(@Res() response, @Query() query) {
     console.log("HOST",process.env.HOST);
@@ -50,19 +52,23 @@ export class ProductController {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          const filename: string = file.originalname;
-          console.log("ORIGINAL NAME ",filename);
-          cb(null, filename);
+          // const filename: string = file.originalname;
+          const filename = uuid();
+          const extension = '.webp';
+          console.log("FILE NAME",filename);
+          cb(null, `${filename}${extension}`);
         },
       }),
     }),
   )
+
   async createProduct(
     @Res() response,
     @Body() product: ProductCreateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     if (files) {
+      console.log("FILES",files);
       let arr:productImages[] = [];
       files.forEach((element) => {
         arr.push(
@@ -72,14 +78,17 @@ export class ProductController {
           }
           )
       });
+      console.log("ARR",arr);
       product.image = arr;
     }
+    // product.image = files;
     let hashTag = product.hashtag.toString().split(',');
     product.hashtag = hashTag;
     // product.id = uuid();
     let status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ message: status });
   }
+ 
 
   @UseGuards(AuthenticatedGuard)
   @Post('/update')
