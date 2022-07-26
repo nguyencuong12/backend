@@ -187,15 +187,15 @@ export class ProductService {
     return products;
   }
 
-  async updateProduct(product: ProductUpdateDto) {
+  async updateProduct(product: ProductUpdateDto,imageUpdate:any) {
     const filter = { _id: product._id };
     try {
-   
       let recent = await this.productModel.findById(filter._id);
+      console.log("RECENT",recent);
       // product.image = recent.image;
       // recent = product;
       // console.log('PRODUCT UPDATE ', product);
-      return await this.productModel.findOneAndUpdate(filter, product);
+      // return await this.productModel.findOneAndUpdate(filter, product);
 
       // return await this.productModel.findOneAndUpdate(filter, product, {
       //   new: true,

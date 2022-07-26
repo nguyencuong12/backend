@@ -51,6 +51,7 @@ export class ProductController {
         destination: './uploads',
         filename: (req, file, cb) => {
           const filename: string = file.originalname;
+          console.log("ORIGINAL NAME ",filename);
           cb(null, filename);
         },
       }),
@@ -83,10 +84,11 @@ export class ProductController {
   @UseGuards(AuthenticatedGuard)
   @Post('/update')
   @UseInterceptors(
-    FilesInterceptor('image', 10, {
+    FilesInterceptor('imageUpdate', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
+         
           const filename: string = file.originalname;
           cb(null, filename);
         },
@@ -98,18 +100,19 @@ export class ProductController {
     @Body() product: ProductUpdateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
+    
+    let arr = [];
     if (files) {
-      let arr = [];
-      files.forEach((element) => {
-        arr.push(process.env.HOST + '/image/' + element.filename);
-      });
-      product.image = arr;
-  
+      console.log("FILES",files[0]);
+      // files.forEach((element) => {
+      //   arr.push(process.env.HOST + '/image/' + element.filename);
+      // });
+      // product.image = arr;
     }
-
+    console.log("PRODUCT UPDATE",product);
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
-    // const update = await this.productService.updateProduct(product);
+    // const update = await this.productService.updateProduct(product,arr);
 
     // return response.status(HttpStatus.OK).json({ product: update });
   }

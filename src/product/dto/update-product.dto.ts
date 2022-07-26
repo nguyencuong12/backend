@@ -7,7 +7,7 @@ export class ProductUpdateDto {
   description: string;
   type: string;
 //   image:productImages[];
-  image:string[];
+  image:productImages[];
   price: string;
   hashtag: Array<string>;
   _id: string;
