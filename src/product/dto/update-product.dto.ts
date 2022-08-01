@@ -14,4 +14,6 @@ export class ProductUpdateDto {
   id: string;
   updateProduct?: boolean;
   colors: string[];
+  
+
 }

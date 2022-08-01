@@ -71,7 +71,6 @@ export class ProductController {
           path: process.env.HOST + '/image/' + element.filename,
         });
       });
-      console.log('ARR', arr);
       product.image = arr;
     }
     // product.image = files;
@@ -91,7 +90,6 @@ export class ProductController {
         filename: (req, file, cb) => {
           const filename: string = file.originalname.split('.')[0];
           const extension: string = '.webp';
-          console.log('FILE NAME', filename);
           cb(null, `${filename}${extension}`);
         },
       }),
@@ -110,11 +108,23 @@ export class ProductController {
       // });
       // product.image = arr;
     }
-    console.log('PRODUCT UPDATE', product);
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
     const update = await this.productService.updateProduct(product, arr);
-    return response.status(HttpStatus.OK).json({ product: update });
+    // return response.status(HttpStatus.OK).json({ product: update });
+  }
+
+  @UseGuards(AuthenticatedGuard)
+  @Post('deleteImages')
+  async deleteImagesProduct(@Res() response,@Body() body:{
+    id:string,
+    idImage:string
+  }){
+    const {id,idImage} = body;
+    // let arr = ["string","string"]
+   let result = await  this.productService.deleteImagesProduct(id,idImage);
+   return response.status(HttpStatus.OK).json({ updateStatus:result });
+
   }
 
   @Get(':id')

@@ -5,8 +5,10 @@ import { Product, ProductDocument } from './product.schema';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
 // import { ProductDto } from './dto/create-product.dto';
-import {ProductUpdateDto} from './dto/update-product.dto';
-import {ProductCreateDto} from './dto/create-product.dto';
+import { ProductUpdateDto } from './dto/update-product.dto';
+import { ProductCreateDto } from './dto/create-product.dto';
+import { productImages } from './interfaces/productInterface';
+import * as path from 'path';
 
 
 @Injectable()
@@ -28,9 +30,9 @@ export class ProductService {
     return { _productList: data, count: productAmount };
     // return await this.productModel.find().exec();
   }
-  async createProduct(product:ProductCreateDto) {
+  async createProduct(product: ProductCreateDto) {
     try {
-      console.log("CREATE PRODUCT CALL ",product);
+      console.log('CREATE PRODUCT CALL ', product);
       const newProduct = new this.productModel(product);
       return newProduct.save();
     } catch (err) {
@@ -160,6 +162,17 @@ export class ProductService {
       .exec();
     return { product: data, count: productAmount.length };
   }
+  async deleteImagesProduct(idProduct: string, idImage: string) {
+    let product: ProductUpdateDto = await this.productModel.findById(idProduct);
+    product.image.map((image: any, index) => {
+      if (idImage == image.id) {
+        product.image.splice(index, 1);
+      }
+    });
+
+    await this.productModel.findOneAndUpdate({ _id: product._id }, product);
+    return product;
+  }
   async fetchCatClothes(page: number) {
     const query = this.productModel.find({
       type: 'clothes',
@@ -182,24 +195,40 @@ export class ProductService {
       throw new err();
     }
   }
-  async fetchProductsFromType (type:string){
-     let products = await this.productModel.find({ type: type });
+  async fetchProductsFromType(type: string) {
+    let products = await this.productModel.find({ type: type });
     return products;
   }
 
-  async updateProduct(product: ProductUpdateDto,imageUpdate:any) {
+  async updateProduct(product: ProductUpdateDto, imageUpdate: any) {
     const filter = { _id: product._id };
     try {
+      let arr:any = [];
       let recent = await this.productModel.findById(filter._id);
-      console.log("RECENT",recent);
-      // product.image = recent.image;
-      // recent = product;
-      // console.log('PRODUCT UPDATE ', product);
-      // return await this.productModel.findOneAndUpdate(filter, product);
+      product.image.map((instanceUpdate)=>{
+        let productIM:productImages = JSON.parse(instanceUpdate.toString())
+        arr.push(productIM);
+      });
+      const resultsDeleteUpdateImage = recent.image.filter(({ id: id1 }) => !arr.some(({ id: id2 }) => id2 === id1));
+    
+      if(resultsDeleteUpdateImage.length > 0){
+        resultsDeleteUpdateImage.map((instance)=>{
+          let pathP = path.join(__dirname,"../../uploads/");
+          console.log("PATH",pathP);
+          let p = pathP +instance.id+".webp";
+          console.log("P",p);
+          fs.unlink(p, function (err) {
+            if (err) throw err;
+            // if no error, file has been deleted successfully
+            console.log('File deleted!');
+        });
+         
+        })
+      }
+      product.image = arr;
+      product.colors = recent.colors;
 
-      // return await this.productModel.findOneAndUpdate(filter, product, {
-      //   new: true,
-      // });
+      // return await this.productModel.findOneAndUpdate(filter, product);
     } catch (err) {
       throw new err();
     }
