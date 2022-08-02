@@ -104,14 +104,14 @@ export class ProductController {
     if (files) {
       console.log('FILES', files);
       // files.forEach((element) => {
-      //   arr.push(process.env.HOST + '/image/' + element.filename);
+      //   arr.push(process.env.HOST + '/imagess' + element.filename);
       // });
       // product.image = arr;
     }
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
     const update = await this.productService.updateProduct(product, arr);
-    // return response.status(HttpStatus.OK).json({ product: update });
+    return response.status(HttpStatus.OK).json({ product: update });
   }
 
   @UseGuards(AuthenticatedGuard)

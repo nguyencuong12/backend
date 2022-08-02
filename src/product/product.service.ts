@@ -227,8 +227,8 @@ export class ProductService {
       }
       product.image = arr;
       product.colors = recent.colors;
-
-      // return await this.productModel.findOneAndUpdate(filter, product);
+      console.log("PRODUCT IMAGE ",product);
+      return await this.productModel.findOneAndUpdate(filter, product);
     } catch (err) {
       throw new err();
     }
