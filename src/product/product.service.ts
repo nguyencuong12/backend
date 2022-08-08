@@ -56,22 +56,7 @@ export class ProductService {
   async fetchBestSaleProducts() {
     return await this.productModel.find({ hashtag: '#bestsale' }).exec();
   }
-  async fetchVitamin(page: number) {
-    // let productAmount = await this.productModel.countDocuments();
-    const query = this.productModel.find({
-      type: 'vitamin',
-      skip: 10,
-      limit: 3,
-    });
-    let productAmount = await this.productModel.find({ type: 'vitamin' });
-    // const pageSelect: number = page || 1;
-    const limit: number = 4;
-    const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-    return { product: data, count: productAmount.length };
-  }
+
   async fetchProduct(id: string) {
     try {
       return await this.productModel.findById(id);
@@ -80,88 +65,10 @@ export class ProductService {
       throw err;
     }
   }
-  async fetchFoodProducts(page: number) {
-    const query = this.productModel.find({
-      hashtag: '#food',
-      skip: 10,
-      limit: 3,
-    });
-    let productAmount = await this.productModel.find({ hashtag: '#food' });
-    // const pageSelect: number = page || 1;
-    const limit: number = 4;
-    const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-    return { product: data, count: productAmount.length };
-
-    // return await this.productModel.find({ hashtag: '#food' }).exec();
-  }
   async fetchFeatureProduct() {
     return await this.productModel.find({ hashtag: '#feature' }).exec();
   }
-  async fetchCatBreeds(page: number) {
-    const query = this.productModel.find({
-      type: 'breed',
-      skip: 10,
-      limit: 3,
-    });
-    let productAmount = await this.productModel.find({ type: 'breed' });
-    // const pageSelect: number = page || 1;
-    const limit: number = 4;
-    const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-    return { product: data, count: productAmount.length };
-
-    // return await this.productModel.find({ type: 'breed' }).exec();
-  }
-  async fetchCatSeeds(page: number) {
-    const query = this.productModel.find({
-      type: 'seed',
-      skip: 10,
-      limit: 3,
-    });
-    let productAmount = await this.productModel.find({ type: 'seed' });
-    // const pageSelect: number = page || 1;
-    const limit: number = 4;
-    const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-    return { product: data, count: productAmount.length };
-  }
-  async fetchCatPate(page: number) {
-    const query = this.productModel.find({
-      type: 'pate',
-      skip: 10,
-      limit: 3,
-    });
-    let productAmount = await this.productModel.find({ type: 'pate' });
-    // const pageSelect: number = page || 1;
-    const limit: number = 4;
-    const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-    return { product: data, count: productAmount.length };
-  }
-  async fetchToys(page: number) {
-    const query = this.productModel.find({
-      type: 'toys',
-      skip: 10,
-      limit: 3,
-    });
-    let productAmount = await this.productModel.find({ type: 'toys' });
-    // const pageSelect: number = page || 1;
-    const limit: number = 4;
-    const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-    return { product: data, count: productAmount.length };
-  }
+ 
   async deleteImagesProduct(idProduct: string, idImage: string) {
     let product: ProductUpdateDto = await this.productModel.findById(idProduct);
     product.image.map((image: any, index) => {
@@ -173,21 +80,7 @@ export class ProductService {
     await this.productModel.findOneAndUpdate({ _id: product._id }, product);
     return product;
   }
-  async fetchCatClothes(page: number) {
-    const query = this.productModel.find({
-      type: 'clothes',
-      skip: 10,
-      limit: 3,
-    });
-    let productAmount = await this.productModel.find({ type: 'clothes' });
-    // const pageSelect: number = page || 1;
-    const limit: number = 4;
-    const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-    return { product: data, count: productAmount.length };
-  }
+ 
   async deleteProduct(id: string) {
     try {
       return await this.productModel.findByIdAndDelete(id).exec();
@@ -199,7 +92,29 @@ export class ProductService {
     let products = await this.productModel.find({ type: type });
     return products;
   }
-
+  async getProductsFromCategory(category:string[]){
+    // let products = await this.productModel.find({categories:category});
+    let products = await this.productModel.find({type:
+     category
+      // category
+    });
+    console.log("products",products);
+    return products;
+  }
+  async getProductsFromHashTag(hashtag:string){
+    let products = await this.productModel.find({ hashtag: hashtag }).exec();
+    return products;
+  }
+  async getProductsAnhKiet(){
+ 
+    let products = await this.productModel.find(
+      
+      { type: 'gas-anhkiet' }
+      
+      
+      );
+    return products;
+  }
   async updateProduct(product: ProductUpdateDto, imageUpdate: any) {
     const filter = { _id: product._id };
     try {

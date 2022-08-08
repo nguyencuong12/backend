@@ -23,6 +23,12 @@ export class Product {
   hashtag: Array<string>;
   @Prop()
   colors: Array<string>;
+  @Prop()
+  quality:Number;
+
 }
+
+
+
 export const ProductSchema = SchemaFactory.createForClass(Product);
 
