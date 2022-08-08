@@ -81,7 +81,6 @@ export class ProductController {
     let status = await this.productService.createProduct(product);
     return response.status(HttpStatus.OK).json({ message: status });
   }
-
   @UseGuards(AuthenticatedGuard)
   @Post('/update')
   @UseInterceptors(
@@ -110,15 +109,18 @@ export class ProductController {
 
   @UseGuards(AuthenticatedGuard)
   @Post('deleteImages')
-  async deleteImagesProduct(@Res() response,@Body() body:{
-    id:string,
-    idImage:string
-  }){
-    const {id,idImage} = body;
+  async deleteImagesProduct(
+    @Res() response,
+    @Body()
+    body: {
+      id: string;
+      idImage: string;
+    },
+  ) {
+    const { id, idImage } = body;
     // let arr = ["string","string"]
-   let result = await  this.productService.deleteImagesProduct(id,idImage);
-   return response.status(HttpStatus.OK).json({ updateStatus:result });
-
+    let result = await this.productService.deleteImagesProduct(id, idImage);
+    return response.status(HttpStatus.OK).json({ updateStatus: result });
   }
 
   @Get(':id')
@@ -147,23 +149,27 @@ export class ProductController {
   }
   @Post('best-sale')
   async fetchBestSaleProducts(@Res() response) {
-  
-    const products = await this.productService.getProductsFromHashTag('#bestsale');
+    const products = await this.productService.getProductsFromHashTag(
+      '#bestsale',
+    );
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('categories')
-  async fetchProductsFromCategories(@Res() response,@Body() body){
-    const {categories} = body;
-    let products = await this.productService.getProductsFromCategory(categories);
+  async fetchProductsFromCategories(@Res() response, @Body() body) {
+    const { categories } = body;
+    let products = await this.productService.getProductsFromCategory(
+      categories,
+    );
     return response.status(HttpStatus.OK).json({ products: products });
     // const products = await this.productService('bestsale');
     // return response.status(HttpStatus.OK).json({ products: products });
-
   }
   @Post('feature')
   async fetchFeatureProduct(@Res() response) {
-    const products = await this.productService.getProductsFromHashTag('#feature');
-    console.log("PRODUCT FEATURE",products);
+    const products = await this.productService.getProductsFromHashTag(
+      '#feature',
+    );
+    console.log('PRODUCT FEATURE', products);
 
     return response.status(HttpStatus.OK).json({ products: products });
   }
@@ -173,10 +179,12 @@ export class ProductController {
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('bep-gas')
-  async fetchBepGas(@Res() response ,@Body() body) {
-    const {categories} = body;
+  async fetchBepGas(@Res() response, @Body() body) {
+    const { categories } = body;
 
-    let products = await this.productService.getProductsFromCategory(categories);
+    let products = await this.productService.getProductsFromCategory(
+      categories,
+    );
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Post('day-gas')
@@ -184,5 +192,4 @@ export class ProductController {
     const products = await this.productService.fetchProductsFromType('day-gas');
     return response.status(HttpStatus.OK).json({ products: products });
   }
-
 }

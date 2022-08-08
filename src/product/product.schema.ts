@@ -3,8 +3,7 @@ import { Document } from 'mongoose';
 import { productImages } from './interfaces/productInterface';
 export type ProductDocument = Product & Document;
 
-@Schema({ versionKey: false,
-})
+@Schema({ versionKey: false })
 export class Product {
   @Prop()
   id: string;
@@ -16,7 +15,7 @@ export class Product {
   type: string;
   @Prop()
   // image: Array<string>;
-  image:Array<productImages>
+  image: Array<productImages>;
   @Prop()
   price: string;
   @Prop()
@@ -24,11 +23,9 @@ export class Product {
   @Prop()
   colors: Array<string>;
   @Prop()
-  quality:Number;
-
+  quality: Number;
+  @Prop()
+  categories: Array<string>;
 }
 
-
-
 export const ProductSchema = SchemaFactory.createForClass(Product);
-

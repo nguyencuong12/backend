@@ -10,7 +10,6 @@ import { ProductCreateDto } from './dto/create-product.dto';
 import { productImages } from './interfaces/productInterface';
 import * as path from 'path';
 
-
 @Injectable()
 export class ProductService {
   constructor(
@@ -32,7 +31,6 @@ export class ProductService {
   }
   async createProduct(product: ProductCreateDto) {
     try {
-      console.log('CREATE PRODUCT CALL ', product);
       const newProduct = new this.productModel(product);
       return newProduct.save();
     } catch (err) {
@@ -68,7 +66,7 @@ export class ProductService {
   async fetchFeatureProduct() {
     return await this.productModel.find({ hashtag: '#feature' }).exec();
   }
- 
+
   async deleteImagesProduct(idProduct: string, idImage: string) {
     let product: ProductUpdateDto = await this.productModel.findById(idProduct);
     product.image.map((image: any, index) => {
@@ -80,7 +78,7 @@ export class ProductService {
     await this.productModel.findOneAndUpdate({ _id: product._id }, product);
     return product;
   }
- 
+
   async deleteProduct(id: string) {
     try {
       return await this.productModel.findByIdAndDelete(id).exec();
@@ -92,57 +90,53 @@ export class ProductService {
     let products = await this.productModel.find({ type: type });
     return products;
   }
-  async getProductsFromCategory(category:string[]){
+  async getProductsFromCategory(category: string[]) {
     // let products = await this.productModel.find({categories:category});
-    let products = await this.productModel.find({type:
-     category
+    let products = await this.productModel.find({
+      type: category,
       // category
     });
-    console.log("products",products);
+    console.log('products', products);
     return products;
   }
-  async getProductsFromHashTag(hashtag:string){
+  async getProductsFromHashTag(hashtag: string) {
     let products = await this.productModel.find({ hashtag: hashtag }).exec();
     return products;
   }
-  async getProductsAnhKiet(){
- 
-    let products = await this.productModel.find(
-      
-      { type: 'gas-anhkiet' }
-      
-      
-      );
+  async getProductsAnhKiet() {
+    let products = await this.productModel.find({ type: 'gas-anhkiet' });
     return products;
   }
   async updateProduct(product: ProductUpdateDto, imageUpdate: any) {
     const filter = { _id: product._id };
     try {
-      let arr:any = [];
+      let arr: any = [];
       let recent = await this.productModel.findById(filter._id);
-      product.image.map((instanceUpdate)=>{
-        let productIM:productImages = JSON.parse(instanceUpdate.toString())
+      product.image.map((instanceUpdate) => {
+        let productIM: productImages = JSON.parse(instanceUpdate.toString());
         arr.push(productIM);
       });
-      const resultsDeleteUpdateImage = recent.image.filter(({ id: id1 }) => !arr.some(({ id: id2 }) => id2 === id1));
-    
-      if(resultsDeleteUpdateImage.length > 0){
-        resultsDeleteUpdateImage.map((instance)=>{
-          let pathP = path.join(__dirname,"../../uploads/");
-          console.log("PATH",pathP);
-          let p = pathP +instance.id+".webp";
-          console.log("P",p);
+      const resultsDeleteUpdateImage = recent.image.filter(
+        ({ id: id1 }) => !arr.some(({ id: id2 }) => id2 === id1),
+      );
+
+      if (resultsDeleteUpdateImage.length > 0) {
+        resultsDeleteUpdateImage.map((instance) => {
+          let pathP = path.join(__dirname, '../../uploads/');
+          console.log('PATH', pathP);
+          let p = pathP + instance.id + '.webp';
+          console.log('P', p);
           fs.unlink(p, function (err) {
             if (err) throw err;
             // if no error, file has been deleted successfully
             console.log('File deleted!');
+          });
         });
-         
-        })
       }
       product.image = arr;
       product.colors = recent.colors;
-      console.log("PRODUCT IMAGE ",product);
+
+      console.log('PRODUCT IMAGE ', product);
       return await this.productModel.findOneAndUpdate(filter, product);
     } catch (err) {
       throw new err();
