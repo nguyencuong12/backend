@@ -107,36 +107,56 @@ export class ProductService {
     let products = await this.productModel.find({ type: 'gas-anhkiet' });
     return products;
   }
-  async updateProduct(product: ProductUpdateDto, imageUpdate: any) {
+
+  async handleUpdateImagesForProduct(
+    recentProductImages: productImages[],
+    reqImagesChange: productImages[],
+  ) {
+    let arrImages: productImages[] = [];
+    if (recentProductImages.length == reqImagesChange.length) {
+      //LENGTH IMAGES NOT CHANGE !!!
+      arrImages = recentProductImages;
+    }
+    //LENGTH IMAGES CHANGED !!!
+    else {
+      arrImages = reqImagesChange.map((image) => {
+        return JSON.parse(image.toString());
+      });
+      const imagesDelete = recentProductImages.filter(
+        ({ id: id1 }) => !arrImages.some(({ id: id2 }) => id2 === id1),
+      );
+        if (imagesDelete.length > 0) {
+          imagesDelete.map((instance) => {
+            let pathP = path.join(__dirname, '../../uploads/');
+            console.log('PATH', pathP);
+            let p = pathP + instance.id + '.webp';
+            console.log('P', p);
+            fs.unlink(p, function (err) {
+              if (err) throw err;
+              console.log('File deleted!');
+            });
+          });
+        }
+    }
+
+    return arrImages;
+  }
+  async updateProduct(product: ProductUpdateDto) {
     const filter = { _id: product._id };
     try {
-      let arr: any = [];
-      let recent = await this.productModel.findById(filter._id);
-      product.image.map((instanceUpdate) => {
-        let productIM: productImages = JSON.parse(instanceUpdate.toString());
-        arr.push(productIM);
-      });
-      const resultsDeleteUpdateImage = recent.image.filter(
-        ({ id: id1 }) => !arr.some(({ id: id2 }) => id2 === id1),
-      );
+      let recentProduct = await this.productModel.findById(filter._id);
+      let imagesUpdate: productImages[] =
+        await this.handleUpdateImagesForProduct(
+          recentProduct.image,
+          product.image,
+        );
+      product.image = imagesUpdate;
+      // arr = recent;
+      // product.image =arr;
 
-      if (resultsDeleteUpdateImage.length > 0) {
-        resultsDeleteUpdateImage.map((instance) => {
-          let pathP = path.join(__dirname, '../../uploads/');
-          console.log('PATH', pathP);
-          let p = pathP + instance.id + '.webp';
-          console.log('P', p);
-          fs.unlink(p, function (err) {
-            if (err) throw err;
-            // if no error, file has been deleted successfully
-            console.log('File deleted!');
-          });
-        });
-      }
-      product.image = arr;
-      product.colors = recent.colors;
-
-      console.log('PRODUCT IMAGE ', product);
+      // product.image = arr;
+      // product.colors = recent.colors;
+      console.log('product update !!', product);
       return await this.productModel.findOneAndUpdate(filter, product);
     } catch (err) {
       throw new err();

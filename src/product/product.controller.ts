@@ -100,10 +100,12 @@ export class ProductController {
     @Body() product: ProductUpdateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    let arr = [];
+    if(files){
+      console.log("Files",files);
+    }
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
-    const update = await this.productService.updateProduct(product, arr);
+    const update = await this.productService.updateProduct(product);
     return response.status(HttpStatus.OK).json({ product: update });
   }
 
