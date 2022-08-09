@@ -93,7 +93,7 @@ export class ProductService {
   async getProductsFromCategory(category: string[]) {
     // let products = await this.productModel.find({categories:category});
     let products = await this.productModel.find({
-      type: category,
+      categories:category,
       // category
     });
     console.log('products', products);
@@ -125,18 +125,18 @@ export class ProductService {
       const imagesDelete = recentProductImages.filter(
         ({ id: id1 }) => !arrImages.some(({ id: id2 }) => id2 === id1),
       );
-        if (imagesDelete.length > 0) {
-          imagesDelete.map((instance) => {
-            let pathP = path.join(__dirname, '../../uploads/');
-            console.log('PATH', pathP);
-            let p = pathP + instance.id + '.webp';
-            console.log('P', p);
-            fs.unlink(p, function (err) {
-              if (err) throw err;
-              console.log('File deleted!');
-            });
+      if (imagesDelete.length > 0) {
+        imagesDelete.map((instance) => {
+          let pathP = path.join(__dirname, '../../uploads/');
+          console.log('PATH', pathP);
+          let p = pathP + instance.id + '.webp';
+          console.log('P', p);
+          fs.unlink(p, function (err) {
+            if (err) throw err;
+            console.log('File deleted!');
           });
-        }
+        });
+      }
     }
 
     return arrImages;
