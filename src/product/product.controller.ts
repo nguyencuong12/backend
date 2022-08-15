@@ -100,8 +100,8 @@ export class ProductController {
     @Body() product: ProductUpdateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    if(files){
-      console.log("Files",files);
+    if (files) {
+      console.log('Files', files);
     }
     let hashTagArray = product.hashtag.toString().split(',');
     product.hashtag = hashTagArray;
@@ -175,68 +175,46 @@ export class ProductController {
 
     return response.status(HttpStatus.OK).json({ products: products });
   }
-  @Post("getProductShopee")
-  async getProductShopee(@Res() response,@Body() body){
-    const {itemID,shopID} = body;
-    try {
-      const res = await fetch(
-        `https://shopee.vn/api/v4/item/get?itemid=${itemID}&shopid=${shopID}`,
-        {
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "Access-Control-Allow-Origin":"*",
-            accept: "*/*",
-            "accept-language": "vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7",
-            "if-none-match": "c90d874e5521e97055639ca8104f3f83",
-            "if-none-match-": "55b03-957e3d3e8f80452fe855d8fae46e8ff7",
-            "sec-ch-ua":
-              '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
-            "sec-ch-ua-mobile": "?0",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-origin",
-            "x-api-source": "pc",
-            "x-requested-with": "XMLHttpRequest",
-            "x-shopee-language": "vi",
-          },
-          referrerPolicy: "strict-origin-when-cross-origin",
-          method: "GET",
-          mode:"cors",
-          body: null,
-        }
-      );
-      const data = await res.json();
-     
-    console.log("DATA",data);
+  @Post('getProductShopee')
+  async getProductShopee(@Res() response, @Body() body, @Query() query) {
+    console.log('QUERY');
+    // const { shoppeeUrl } = body;
+    // try {
+    //   const res = await fetch(
+    //     `https://shopee.vn/api/v4/item/get?itemid=${itemID}&shopid=${shopID}`,
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json; charset=utf-8',
+    //         'Access-Control-Allow-Origin': '*',
+    //         accept: '*/*',
+    //         'accept-language': 'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',
+    //         'if-none-match': 'c90d874e5521e97055639ca8104f3f83',
+    //         'if-none-match-': '55b03-957e3d3e8f80452fe855d8fae46e8ff7',
+    //         'sec-ch-ua':
+    //           '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+    //         'sec-ch-ua-mobile': '?0',
+    //         'sec-fetch-dest': 'empty',
+    //         'sec-fetch-mode': 'cors',
+    //         'sec-fetch-site': 'same-origin',
+    //         'x-api-source': 'pc',
+    //         'x-requested-with': 'XMLHttpRequest',
+    //         'x-shopee-language': 'vi',
+    //       },
+    //       referrerPolicy: 'strict-origin-when-cross-origin',
+    //       method: 'GET',
+    //       mode: 'cors',
+    //       body: null,
+    //     },
+    //   );
+    //   const data = await res.json();
 
-      let productShopeeResponse = {
-        name:data.data.name,
-        image:data.data.image,
-        brand:data.data.brand,
-        images:data.data.images,
-        attributes:data.data.attributes,
-        categories:data.data.categories,
-        discount:data.data.discount,
-        description:data.data.description,
-        price:data.data.price,
-        beforeDiscount:data.data.price_before_discount,
-        shopLocation:data.data.shop_location,
-        stock:data.data.stock,
-        shopID:data.data.shopid,
-        productID:data.data.itemid,
-      };
+    //   // return data;
 
-      // return data;
-
-      return response.status(HttpStatus.OK).json({ products:productShopeeResponse });
-
-    } 
-    catch (error) {
-      console.error("ERROR",error);
-    
-    }
-   
-}
+    //   return response.status(HttpStatus.OK).json({ products: data });
+    // } catch (error) {
+    //   console.error('ERROR', error);
+    // }
+  }
 
   @Post('gas-anhkiet')
   async fetchGasAnhKiet(@Res() response) {

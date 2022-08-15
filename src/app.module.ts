@@ -27,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './exceptions/http-exception.filter';
+import { ShopeeModule } from './shopee/shopee.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { HttpExceptionFilter } from './exceptions/http-exception.filter';
     ImageModule,
     AuthModule,
     AdminModule,
+    ShopeeModule,
 
     // UsersModule,
     // PassportModule,
