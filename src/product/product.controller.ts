@@ -177,13 +177,13 @@ export class ProductController {
   }
   @Post('getProductShopee')
   async getProductShopee(@Res() response, @Body() body) {
-    const {shopeeUrl } = body;
-   let arrT1=  shopeeUrl.split('?');
-   let arrT2 = arrT1[0].split('.');
-   let shopID = arrT2[2];
-   let itemID = arrT2[3];
-   console.log("SHOP ID",shopID);
-   console.log("ITEM ID",itemID);
+    const { shopeeUrl } = body;
+    let arrT1 = shopeeUrl.split('?');
+    let arrT2 = arrT1[0].split('.');
+    let shopID = arrT2[2];
+    let itemID = arrT2[3];
+    console.log('SHOP ID', shopID);
+    console.log('ITEM ID', itemID);
     const { shoppeeUrl } = body;
     try {
       const res = await fetch(
@@ -213,7 +213,6 @@ export class ProductController {
         },
       );
       const data = await res.json();
-
 
       return response.status(HttpStatus.OK).json({ products: data });
     } catch (error) {
