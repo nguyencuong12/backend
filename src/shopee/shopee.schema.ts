@@ -1,9 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { attributesInterface, imageInterface } from './dto/createProduct.dto';
+import { attributesInterface, categoriesInterface } from './dto/createProduct.dto';
 
 export type ShopeeDocument = Shopee & Document;
-
 @Schema({ versionKey: false })
 export class Shopee {
   @Prop()
@@ -19,7 +18,7 @@ export class Shopee {
   @Prop()
   image: string;
   @Prop()
-  images: [imageInterface];
+  images: string[];
   @Prop()
   stock: number;
   @Prop()
@@ -32,6 +31,22 @@ export class Shopee {
   discount: string;
   @Prop()
   attributes: [attributesInterface];
+  @Prop()
+  tag:string[];
 }
 
+export type ShopeeCategoriesDocument = ShopeeCategories & Document;
+@Schema({ versionKey: false })
+export class ShopeeCategories {
+  @Prop({unique:true})
+  itemID:string;
+  @Prop()
+  categories:[categoriesInterface];
+}
+
+export const ShopeeCategoriesSchema = SchemaFactory.createForClass(ShopeeCategories);
 export const ShopeeSchema = SchemaFactory.createForClass(Shopee);
+
+
+
+

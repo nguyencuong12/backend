@@ -179,12 +179,15 @@ export class ProductController {
   async getProductShopee(@Res() response, @Body() body) {
     const { shopeeUrl } = body;
     let arrT1 = shopeeUrl.split('?');
-    let arrT2 = arrT1[0].split('.');
+  
+    let arrT2 = arrT1[1].split('.');
+    console.log('ARR1', arrT2[3]);
     let shopID = arrT2[2];
-    let itemID = arrT2[3];
+    let itemID = arrT2[3].split('%')[0];
+
     console.log('SHOP ID', shopID);
     console.log('ITEM ID', itemID);
-    const { shoppeeUrl } = body;
+
     try {
       const res = await fetch(
         `https://shopee.vn/api/v4/item/get?itemid=${itemID}&shopid=${shopID}`,
@@ -213,7 +216,7 @@ export class ProductController {
         },
       );
       const data = await res.json();
-
+      console.log("PARSE DATA",data);
       return response.status(HttpStatus.OK).json({ products: data });
     } catch (error) {
       console.error('ERROR', error);
