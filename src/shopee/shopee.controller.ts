@@ -11,7 +11,7 @@ export class ShopeeController {
     @Res() response,
     @Body() product: ShopeeCreateDto,
   ) {
-
+    
     const result = await this.shopeeService.createProductShopee(product);
     return response.status(HttpStatus.OK).json({ shopeeProduct: result });
   }
@@ -22,8 +22,20 @@ export class ShopeeController {
   }
   @Get('')
   async fetchAllProductShopee(@Res() response) {
+    console.log("FETCH ALL PRODUCT CALL")
     const result = await this.shopeeService.fetchAllProduct();
     return response.status(HttpStatus.OK).json({ products: result });
+  }
+  @Post('/getProductShopee')
+  async getProductShopee(@Res() response, @Body() body) {
+    const { shopeeUrl } = body;
+    let arrT1 = shopeeUrl.split('?');
+    let arrT2 = arrT1[1].split('.');
+    let shopID = arrT2[2];
+    let itemID = arrT2[3].split('%')[0];
+  
+    const data = await this.shopeeService.getProductShopeeFromURL(shopID,itemID);
+    return response.status(HttpStatus.OK).json({products:data});
   }
   @Post('/categories')
   async fetchProductsFromCategories(@Res() response, @Body() categories) {

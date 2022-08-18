@@ -33,6 +33,9 @@ export class Shopee {
   attributes: [attributesInterface];
   @Prop()
   tag:string[];
+  @Prop()
+  affilate:string;
+  
 }
 
 export type ShopeeCategoriesDocument = ShopeeCategories & Document;
