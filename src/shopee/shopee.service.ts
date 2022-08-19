@@ -9,6 +9,7 @@ import {
   ShopeeCategoriesDocument,
 } from './shopee.schema';
 import fetch from 'node-fetch';
+import { serializeWithBufferAndIndex } from 'bson';
 @Injectable()
 export class ShopeeService {
   constructor(
@@ -51,6 +52,44 @@ export class ShopeeService {
       throw err;
     }
   };
+
+  async updateProductShopee(product:ShopeeCreateDto){
+    const filter = {itemid:product.itemid};
+    const update = product;
+    try{
+      let productUpdate = await this.shopeeModel.findOneAndUpdate(filter,update);
+      console.log("PRODUCT UPDATE",productUpdate);
+      return productUpdate;
+
+    }catch(err){
+
+    }
+  }
+  async searchShopee(title:string){
+      try{
+     
+        let products = await this.shopeeModel.find({title:{$regex:title,$options:'i'}});
+        console.log("PRODUCT",products);
+       
+        return products;
+
+      }catch(err){
+
+      }
+
+  }
+
+
+  async deleteProductShopee(itemID:string){
+    try{
+      await this.shopeeCategoriesModel.findOneAndDelete({itemID:itemID});
+     return await this.shopeeModel.findOneAndDelete({itemid:itemID});
+
+    }catch(err){}
+  }
+
+
+
   async getProductShopeeFromURL(shopID:string,itemID:string){
     console.log("SHOPEID",shopID);
     console.log("ITEMID",itemID);

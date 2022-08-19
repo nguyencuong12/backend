@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res, Get, Param } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, Get, Param ,Put, Delete, Query} from '@nestjs/common';
 import { ShopeeCreateDto } from './dto/createProduct.dto';
 import { ShopeeService } from './shopee.service';
 
@@ -15,17 +15,34 @@ export class ShopeeController {
     const result = await this.shopeeService.createProductShopee(product);
     return response.status(HttpStatus.OK).json({ shopeeProduct: result });
   }
+  @Put('')
+  async updateProductShopee(@Res() response , @Body() productUpdate){
+   let product = await this.shopeeService.updateProductShopee(productUpdate);
+   return response.status(HttpStatus.OK).json({product:product});
+  }
+  @Delete('')
+  async deleteProductShopee(@Res() response,@Query() query){
+    const {id} = query;
+    let result = await this.shopeeService.deleteProductShopee(id)
+    return response.status(HttpStatus.OK).json({product:result});
+  }
+  @Post('/search')
+  async searchShopee(@Res() response,@Body() body){
+    const {title} = body;
+    let products = await this.shopeeService.searchShopee(title);
+    return response.status(HttpStatus.OK).json({products:products});
+  }
+  @Get('')
+  async fetchAllProductShopee(@Res() response) {
+    const result = await this.shopeeService.fetchAllProduct();
+    return response.status(HttpStatus.OK).json({ products: result });
+  }
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
     const product = await this.shopeeService.fetchProduct(params.id);
     return response.status(HttpStatus.OK).json({ product: product });
   }
-  @Get('')
-  async fetchAllProductShopee(@Res() response) {
-    console.log("FETCH ALL PRODUCT CALL")
-    const result = await this.shopeeService.fetchAllProduct();
-    return response.status(HttpStatus.OK).json({ products: result });
-  }
+ 
   @Post('/getProductShopee')
   async getProductShopee(@Res() response, @Body() body) {
     const { shopeeUrl } = body;
