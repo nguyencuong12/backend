@@ -15,13 +15,10 @@ export class ShopeeService {
   constructor(
     @InjectModel(Shopee.name) private shopeeModel: Model<ShopeeDocument>,
     @InjectModel(ShopeeCategories.name)
-    private shopeeCategoriesModel: Model<ShopeeCategoriesDocument>,
-  ) // @InjectModel(Shopee.name) private shopeeModel: Model<ShopeeDocument>,
-
-  {}
+    private shopeeCategoriesModel: Model<ShopeeCategoriesDocument>, // @InjectModel(Shopee.name) private shopeeModel: Model<ShopeeDocument>,
+  ) {}
   async createProductShopee(product: ShopeeCreateDto) {
     try {
-     
       const newShopeeProduct = await new this.shopeeModel(product);
       let categoriesObject = {
         itemID: product.itemid,
@@ -35,64 +32,57 @@ export class ShopeeService {
       await newShopeeCategories.save();
       return await newShopeeProduct.save();
     } catch (err) {
-      console.log("ERR",err);
+      console.log('ERR', err);
     }
   }
 
-  async fetchProductsByTag(tag:string[])
-  //EX: HOT , FEATURE , BEST SALE !!!!
-  {
-    try{
-     return await this.shopeeModel.find({
-        tag:{
-          $all:tag
-        }
-      })
-    }catch(err){
+  async fetchProductsByTag(
+    tag: string[], //EX: HOT , FEATURE , BEST SALE !!!!
+  ) {
+    try {
+      return await this.shopeeModel.find({
+        tag: {
+          $all: tag,
+        },
+      });
+    } catch (err) {
       throw err;
     }
-  };
+  }
 
-  async updateProductShopee(product:ShopeeCreateDto){
-    const filter = {itemid:product.itemid};
+  async updateProductShopee(product: ShopeeCreateDto) {
+    const filter = { itemid: product.itemid };
     const update = product;
-    try{
-      let productUpdate = await this.shopeeModel.findOneAndUpdate(filter,update);
-      console.log("PRODUCT UPDATE",productUpdate);
+    try {
+      let productUpdate = await this.shopeeModel.findOneAndUpdate(
+        filter,
+        update,
+      );
+      console.log('PRODUCT UPDATE', productUpdate);
       return productUpdate;
-
-    }catch(err){
-
-    }
+    } catch (err) {}
   }
-  async searchShopee(title:string){
-      try{
-     
-        let products = await this.shopeeModel.find({title:{$regex:title,$options:'i'}});
-        console.log("PRODUCT",products);
-       
-        return products;
+  async searchShopee(title: string) {
+    try {
+      let products = await this.shopeeModel.find({
+        title: { $regex: title, $options: 'i' },
+      });
+      console.log('PRODUCT', products);
 
-      }catch(err){
-
-      }
-
+      return products;
+    } catch (err) {}
   }
 
-
-  async deleteProductShopee(itemID:string){
-    try{
-      await this.shopeeCategoriesModel.findOneAndDelete({itemID:itemID});
-     return await this.shopeeModel.findOneAndDelete({itemid:itemID});
-
-    }catch(err){}
+  async deleteProductShopee(itemID: string) {
+    try {
+      await this.shopeeCategoriesModel.findOneAndDelete({ itemID: itemID });
+      return await this.shopeeModel.findOneAndDelete({ itemid: itemID });
+    } catch (err) {}
   }
 
-
-
-  async getProductShopeeFromURL(shopID:string,itemID:string){
-    console.log("SHOPEID",shopID);
-    console.log("ITEMID",itemID);
+  async getProductShopeeFromURL(shopID: string, itemID: string) {
+    console.log('SHOPEID', shopID);
+    console.log('ITEMID', itemID);
     try {
       const res = await fetch(
         `https://shopee.vn/api/v4/item/get?itemid=${itemID}&shopid=${shopID}`,
@@ -126,36 +116,36 @@ export class ShopeeService {
     } catch (error) {
       console.error('ERROR', error);
     }
-  };
+  }
   async fetchProductByCategories(categories: string[]) {
     try {
-      let _resultCategories:any = await this.shopeeCategoriesModel.find({
+      let _resultCategories: any = await this.shopeeCategoriesModel.find({
         'categories.display_name': {
           $all: categories,
         },
       });
-      let _resultProductShopee = await this.shopeeModel.find({itemID:
-          {
-            $all:_resultCategories.itemID
-          }
-        });
+      let arrItemID = [];
+      _resultCategories.map((instance) => {
+        arrItemID.push(instance.itemID);
+      });
+      let _resultProductShopee = await this.shopeeModel.find({
+        itemid: {
+          $all: arrItemID,
+        },
+      });
       return _resultProductShopee;
     } catch (err) {}
   }
-  async fetchProduct(id:string){
-    try{
-      let product = await this.shopeeModel.findOne({itemid:id});
+  async fetchProduct(id: string) {
+    try {
+      let product = await this.shopeeModel.findOne({ itemid: id });
       return product;
-
-    }catch(err){
-
-    }
+    } catch (err) {}
   }
-  async fetchAllProduct(){
-    try{
-     let products =  await this.shopeeModel.find();
-     return products;
-    }catch(err){}
+  async fetchAllProduct() {
+    try {
+      let products = await this.shopeeModel.find();
+      return products;
+    } catch (err) {}
   }
-  
 }

@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"itemid":{"$numberInt":"1"}},"name":"itemid_1","background":true,"unique":true}],"uuid":"7fa24c333dfd478dbf5ffbe47c0412a2","collectionName":"shopees","type":"collection"}
