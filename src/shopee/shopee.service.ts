@@ -130,9 +130,10 @@ export class ShopeeService {
       });
       let _resultProductShopee = await this.shopeeModel.find({
         itemid: {
-          $all: arrItemID,
+          $in: arrItemID,
         },
       });
+
       return _resultProductShopee;
     } catch (err) {}
   }
