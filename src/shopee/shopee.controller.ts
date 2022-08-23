@@ -43,16 +43,16 @@ export class ShopeeController {
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Get('')
-  async fetchAllProductShopee(@Res() response) {
-    const result = await this.shopeeService.fetchAllProduct();
-    return response.status(HttpStatus.OK).json({ products: result });
+  async fetchAllProductShopee(@Res() response,@Query() query) {
+    const {page}= query;
+    const result = await this.shopeeService.fetchAllProduct(page);
+    return response.status(HttpStatus.OK).json({ products: result.products ,total:result.total});
   }
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
     const product = await this.shopeeService.fetchProduct(params.id);
     return response.status(HttpStatus.OK).json({ product: product });
   }
-
   @Post('/getProductShopee')
   async getProductShopee(@Res() response, @Body() body) {
     const { shopeeUrl } = body;
@@ -60,6 +60,11 @@ export class ShopeeController {
     let arrT2 = arrT1[1].split('.');
     let shopID = arrT2[2];
     let itemID = arrT2[3].split('%')[0];
+    
+    if(isNaN(arrT2[2])){
+      shopID = arrT2[3];
+      itemID = arrT2[4].split('%')[0];
+    }
     const data = await this.shopeeService.getProductShopeeFromURL(
       shopID,
       itemID,

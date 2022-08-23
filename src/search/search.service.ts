@@ -9,7 +9,6 @@ export class SearchService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
   ) {}
   async excuteSearch(searchField: string) {
-    
     // let searchLow = searchField.toLowerCase();
     return await this.productModel
       .find({

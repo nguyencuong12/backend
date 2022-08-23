@@ -9,7 +9,8 @@ import {
   ShopeeCategoriesDocument,
 } from './shopee.schema';
 import fetch from 'node-fetch';
-import { serializeWithBufferAndIndex } from 'bson';
+
+
 @Injectable()
 export class ShopeeService {
   constructor(
@@ -52,13 +53,27 @@ export class ShopeeService {
 
   async updateProductShopee(product: ShopeeCreateDto) {
     const filter = { itemid: product.itemid };
+    const filterCategories = {itemID:product.itemid};
     const update = product;
     try {
       let productUpdate = await this.shopeeModel.findOneAndUpdate(
         filter,
         update,
       );
-      console.log('PRODUCT UPDATE', productUpdate);
+      let result =await this.shopeeCategoriesModel.findOne(
+        filterCategories,
+      );
+      result.categories = product.categories;
+     
+      result.save();
+     
+      
+
+
+
+
+      //  newShopeeCategories.save();
+
       return productUpdate;
     } catch (err) {}
   }
@@ -143,10 +158,17 @@ export class ShopeeService {
       return product;
     } catch (err) {}
   }
-  async fetchAllProduct() {
+
+  async fetchAllProduct(currentPage: number) {
     try {
-      let products = await this.shopeeModel.find();
-      return products;
+      const query =  this.shopeeModel.find({ skip: 10, limit: 4 });
+      const page: number = currentPage;
+      const limit: number = 4;
+      const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+      return {products:data,total:await this.shopeeModel.countDocuments()}
     } catch (err) {}
   }
 }
