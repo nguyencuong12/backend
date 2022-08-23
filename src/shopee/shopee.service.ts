@@ -64,7 +64,6 @@ export class ShopeeService {
         filterCategories,
       );
       result.categories = product.categories;
-     
       result.save();
      
       
