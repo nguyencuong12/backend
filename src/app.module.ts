@@ -32,7 +32,7 @@ import { ShopeeModule } from './shopee/shopee.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot('mongodb://localhost:27017/gasanhkiet'),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/gasanhkiet'),
     ProductModule,
     SearchModule,
     GuestModule,
