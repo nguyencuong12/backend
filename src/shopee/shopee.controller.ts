@@ -72,12 +72,15 @@ export class ShopeeController {
     return response.status(HttpStatus.OK).json({ products: data });
   }
   @Post('/categories')
-  async fetchProductsFromCategories(@Res() response, @Body() categories) {
+  async fetchProductsFromCategories(@Res() response, @Body() body) {
+    const {categories,page} =body;
+  
     const result = await this.shopeeService.fetchProductByCategories(
       categories,
+      page
     );
 
-    return response.status(HttpStatus.OK).json({ products: result });
+    return response.status(HttpStatus.OK).json({ products:result.products,count:result.count });
   }
   @Post('/tag')
   async fetchProductsByTag(@Res() response, @Body() tag) {
