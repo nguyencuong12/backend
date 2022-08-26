@@ -131,9 +131,7 @@ export class ShopeeService {
     }
   }
   async fetchProductByCategories(categories: string[],currentPage:number) {
-
-    console.log("CATE",categories);
-
+ 
     try {
       let _resultCategories: any = await this.shopeeCategoriesModel.find({
         'categories.display_name': {
@@ -146,35 +144,36 @@ export class ShopeeService {
         arrItemID.push(instance.itemID);
       });
 
-    let countCategories = 0 ;
+ 
       const query =   this.shopeeModel.find({
         itemid: {
           $in: arrItemID,
         },
       });
-      const findAllProductsInCategory = this.shopeeModel.find({
-        itemid: {
-          $in: arrItemID,
-        },
-      });
-   
+      // const count 
 
-     findAllProductsInCategory.count(function(err,count){
-        if(err) console.log(err);
-        else {
-          countCategories = count;
-        
-        }
-      })
-  
+      const amount  = await this.getAmountProductFromCategories(arrItemID);
       const page:number = currentPage;
       const limit:number = 4;
       const data = await  query.skip((page-1)* limit).limit(limit).exec();
-   
-      return {products:data,count:countCategories}
+      return {products:data,count:amount}
       // return _resultProductShopee;
     } catch (err) {}
   }
+
+  async getAmountProductFromCategories(arrItemID:any){
+    // let countCategories = 0 ;
+    return await this.shopeeModel.find({
+      itemid: {
+        $in: arrItemID,
+      },
+    }).count();
+    
+
+  
+
+  }
+  
   async fetchProduct(id: string) {
     try {
       let product = await this.shopeeModel.findOne({ itemid: id });
