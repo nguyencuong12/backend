@@ -10,7 +10,6 @@ import {
 } from './shopee.schema';
 import fetch from 'node-fetch';
 
-
 @Injectable()
 export class ShopeeService {
   constructor(
@@ -53,23 +52,16 @@ export class ShopeeService {
 
   async updateProductShopee(product: ShopeeCreateDto) {
     const filter = { itemid: product.itemid };
-    const filterCategories = {itemID:product.itemid};
+    const filterCategories = { itemID: product.itemid };
     const update = product;
     try {
       let productUpdate = await this.shopeeModel.findOneAndUpdate(
         filter,
         update,
       );
-      let result =await this.shopeeCategoriesModel.findOne(
-        filterCategories,
-      );
+      let result = await this.shopeeCategoriesModel.findOne(filterCategories);
       result.categories = product.categories;
       result.save();
-     
-      
-
-
-
 
       //  newShopeeCategories.save();
 
@@ -81,7 +73,7 @@ export class ShopeeService {
       let products = await this.shopeeModel.find({
         title: { $regex: title, $options: 'i' },
       });
-    
+
       return products;
     } catch (err) {}
   }
@@ -130,8 +122,8 @@ export class ShopeeService {
       console.error('ERROR', error);
     }
   }
-  async fetchProductByCategories(categories: string[],currentPage:number) {
- 
+  async fetchProductByCategories(categories: string[], currentPage: number) {
+    console.log('categories', categories);
     try {
       let _resultCategories: any = await this.shopeeCategoriesModel.find({
         'categories.display_name': {
@@ -143,37 +135,40 @@ export class ShopeeService {
       _resultCategories.map((instance) => {
         arrItemID.push(instance.itemID);
       });
-
- 
-      const query =   this.shopeeModel.find({
-        itemid: {
-          $in: arrItemID,
-        },
+      const query = this.shopeeModel.find({
+        $and: [
+          {
+            itemid: {
+              $in: arrItemID,
+            },
+          },
+        ],
       });
-      // const count 
+      // const count
 
-      const amount  = await this.getAmountProductFromCategories(arrItemID);
-      const page:number = currentPage;
-      const limit:number = 4;
-      const data = await  query.skip((page-1)* limit).limit(limit).exec();
-      return {products:data,count:amount}
+      const amount = await this.getAmountProductFromCategories(arrItemID);
+      const page: number = currentPage;
+      const limit: number = 4;
+      const data = await query
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .exec();
+      return { products: data, count: amount };
       // return _resultProductShopee;
     } catch (err) {}
   }
 
-  async getAmountProductFromCategories(arrItemID:any){
+  async getAmountProductFromCategories(arrItemID: any) {
     // let countCategories = 0 ;
-    return await this.shopeeModel.find({
-      itemid: {
-        $in: arrItemID,
-      },
-    }).count();
-    
-
-  
-
+    return await this.shopeeModel
+      .find({
+        itemid: {
+          $in: arrItemID,
+        },
+      })
+      .count();
   }
-  
+
   async fetchProduct(id: string) {
     try {
       let product = await this.shopeeModel.findOne({ itemid: id });
@@ -183,14 +178,14 @@ export class ShopeeService {
 
   async fetchAllProduct(currentPage: number) {
     try {
-      const query =  this.shopeeModel.find({ skip: 10, limit: 4 });
+      const query = this.shopeeModel.find({ skip: 10, limit: 4 });
       const page: number = currentPage;
       const limit: number = 4;
       const data = await query
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
-      return {products:data,total:await this.shopeeModel.countDocuments()}
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .exec();
+      return { products: data, total: await this.shopeeModel.countDocuments() };
     } catch (err) {}
   }
 }
