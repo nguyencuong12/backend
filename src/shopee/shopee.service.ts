@@ -148,7 +148,7 @@ export class ShopeeService {
 
       const amount = await this.getAmountProductFromCategories(arrItemID);
       const page: number = currentPage;
-      const limit: number = 4;
+      const limit: number = 16;
       const data = await query
         .skip((page - 1) * limit)
         .limit(limit)
