@@ -1,1 +1,1 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"itemid":{"$numberInt":"1"}},"name":"itemid_1","background":true,"unique":true}],"uuid":"c5720dbfd9c248fd8244aea7d777d352","collectionName":"shopees","type":"collection"}
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"itemid":{"$numberInt":"1"}},"name":"itemid_1","background":true,"unique":true}],"uuid":"6d278d8c18b1410cb32885589c2aad41","collectionName":"shopees","type":"collection"}
