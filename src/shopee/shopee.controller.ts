@@ -43,10 +43,12 @@ export class ShopeeController {
     return response.status(HttpStatus.OK).json({ products: products });
   }
   @Get('')
-  async fetchAllProductShopee(@Res() response,@Query() query) {
-    const {page}= query;
+  async fetchAllProductShopee(@Res() response, @Query() query) {
+    const { page } = query;
     const result = await this.shopeeService.fetchAllProduct(page);
-    return response.status(HttpStatus.OK).json({ products: result.products ,total:result.total});
+    return response
+      .status(HttpStatus.OK)
+      .json({ products: result.products, total: result.total });
   }
   @Get(':id')
   async fetchProduct(@Res() response, @Param() params, @Body() body) {
@@ -60,8 +62,8 @@ export class ShopeeController {
     let arrT2 = arrT1[1].split('.');
     let shopID = arrT2[2];
     let itemID = arrT2[3].split('%')[0];
-    
-    if(isNaN(arrT2[2])){
+
+    if (isNaN(arrT2[2])) {
       shopID = arrT2[3];
       itemID = arrT2[4].split('%')[0];
     }
@@ -73,17 +75,28 @@ export class ShopeeController {
   }
   @Post('/categories')
   async fetchProductsFromCategories(@Res() response, @Body() body) {
-    const {categories,page} =body;
+    const { categories, page } = body;
     const result = await this.shopeeService.fetchProductByCategories(
       categories,
-      page
+      page,
     );
-    return response.status(HttpStatus.OK).json({ products:result.products,count:result.count });
+    return response
+      .status(HttpStatus.OK)
+      .json({ products: result.products, count: result.count });
   }
   @Post('/tag')
   async fetchProductsByTag(@Res() response, @Body() tag) {
     console.log('TAG', tag);
     const result = await this.shopeeService.fetchProductsByTag(tag);
     return response.status(HttpStatus.OK).json({ products: result });
+  }
+  @Post('/brand')
+  async fetchProductsByBrand(@Res() response, @Body() body) {
+    const { brand, page } = body;
+
+    const result = await this.shopeeService.fetchProductsByBrand(brand, page);
+    return response
+      .status(HttpStatus.OK)
+      .json({ products: result.products, count: result.count });
   }
 }

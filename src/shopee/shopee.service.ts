@@ -122,6 +122,24 @@ export class ShopeeService {
       console.error('ERROR', error);
     }
   }
+
+  async getAmountProductFromCategories(arrItemID: any) {
+    // let countCategories = 0 ;
+    return await this.shopeeModel
+      .find({
+        itemid: {
+          $in: arrItemID,
+        },
+      })
+      .count();
+  }
+
+  async fetchProduct(id: string) {
+    try {
+      let product = await this.shopeeModel.findOne({ itemid: id });
+      return product;
+    } catch (err) {}
+  }
   async fetchProductByCategories(categories: string[], currentPage: number) {
     console.log('categories', categories);
     try {
@@ -157,25 +175,22 @@ export class ShopeeService {
       // return _resultProductShopee;
     } catch (err) {}
   }
+  async fetchProductsByBrand(brand: string, currentPage: number) {
+    let countProducts = await this.shopeeModel.find({ brand: brand }).count();
+    const query = this.shopeeModel.find({ brand: brand });
+    const page: number = currentPage;
+    const limit: number = 16;
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
 
-  async getAmountProductFromCategories(arrItemID: any) {
-    // let countCategories = 0 ;
-    return await this.shopeeModel
-      .find({
-        itemid: {
-          $in: arrItemID,
-        },
-      })
-      .count();
-  }
-
-  async fetchProduct(id: string) {
     try {
-      let product = await this.shopeeModel.findOne({ itemid: id });
-      return product;
-    } catch (err) {}
+      return { products: data, count: countProducts };
+    } catch (err) {
+      throw err;
+    }
   }
-
   async fetchAllProduct(currentPage: number) {
     try {
       const query = this.shopeeModel.find({ skip: 10, limit: 4 });
