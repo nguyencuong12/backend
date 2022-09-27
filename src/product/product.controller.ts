@@ -36,9 +36,10 @@ export class ProductController {
   @Post('')
   async getProductFromLinkAffilate(@Res() response, @Body() body) {
     const { type, linkAffilate } = body;
-    let result: any;
-    this.productService.getProductInShopeeAffilate(type, linkAffilate);
-
-    response.status(HttpStatus.OK).json({ product: 'KK' });
+    let result = await this.productService.getProductInShopeeAffilate(
+      type,
+      linkAffilate,
+    );
+    response.status(HttpStatus.OK).json({ product: result });
   }
 }
