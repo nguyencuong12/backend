@@ -23,6 +23,8 @@ export class Product {
   amount: number;
   @Prop()
   categories: Array<string>;
+  @Prop()
+  type: Array<string>;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

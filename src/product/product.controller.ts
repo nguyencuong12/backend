@@ -28,6 +28,7 @@ import { ProductUpdateDto } from './dto/update-product.dto';
 import { diskStorage } from 'multer';
 import { AuthenticatedGuard } from 'src/auth/auth.guard';
 import { productImages } from './interfaces/productInterface';
+import { response } from 'express';
 const { uuid } = require('uuidv4');
 
 @Controller('product')
@@ -41,5 +42,9 @@ export class ProductController {
       linkAffilate,
     );
     response.status(HttpStatus.OK).json({ product: result });
+  }
+  @Post('/create')
+  async createProductFromLinkAffilate(@Res() response, @Body() product: any) {
+    console.log('PRODUCT', product);
   }
 }
