@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -14,6 +14,7 @@ import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
+    HttpModule,
     UsersModule,
     PassportModule,
     JwtModule.register({

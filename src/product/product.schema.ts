@@ -12,18 +12,15 @@ export class Product {
   @Prop()
   description: string;
   @Prop()
-  type: string;
+  image: string;
   @Prop()
-  // image: Array<string>;
-  image: Array<productImages>;
+  images: Array<string>;
   @Prop()
   price: string;
   @Prop()
   hashtag: Array<string>;
   @Prop()
-  colors: Array<string>;
-  @Prop()
-  quality: Number;
+  amount: number;
   @Prop()
   categories: Array<string>;
 }

@@ -62,7 +62,6 @@ export class ShopeeController {
     let arrT2 = arrT1[1].split('.');
     let shopID = arrT2[2];
     let itemID = arrT2[3].split('%')[0];
-
     if (isNaN(arrT2[2])) {
       shopID = arrT2[3];
       itemID = arrT2[4].split('%')[0];

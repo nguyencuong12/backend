@@ -115,6 +115,7 @@ export class ShopeeService {
           body: null,
         },
       );
+      console.log('RES', res);
       const data = await res.json();
       return data;
       // return response.status(HttpStatus.OK).json({ products: data });
