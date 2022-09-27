@@ -44,7 +44,11 @@ export class ProductController {
     response.status(HttpStatus.OK).json({ product: result });
   }
   @Post('/create')
-  async createProductFromLinkAffilate(@Res() response, @Body() product: any) {
-    console.log('PRODUCT', product);
+  async createProductFromLinkAffilate(@Res() response, @Body() product: ProductCreateDto) {
+
+    let result = await this.productService.createProductFromLinkAffilate(product);
+   return response.status(HttpStatus.OK).json({product:result });
+
+
   }
 }

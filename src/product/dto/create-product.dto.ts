@@ -9,26 +9,21 @@ export class ProductCreateDto {
   images: Array<string>;
   price: string;
   hashtag: Array<string>;
-  categories?: string[];
+  categories?: [categoriesInterface];
+  attributes?: [attributesInterface];
   brand: string;
 }
-
-// id: string;
-// @Prop({ unique: true, index: 'text' })
-// title: string;
-// @Prop()
-// description: string;
-// @Prop()
-// image: string;
-// @Prop()
-// images: Array<string>;
-// @Prop()
-// price: string;
-// @Prop()
-// hashtag: Array<string>;
-// @Prop()
-// amount: number;
-// @Prop()
-// categories: Array<string>;
-// @Prop()
-// type: Array<string>;
+export class attributesInterface {
+  brand_option: string;
+  id: number;
+  is_timestamp: boolean;
+  name: string;
+  val_id: string;
+  value: string;
+}
+export class categoriesInterface{
+  catid:number;
+  display_name:string;
+  no_sub:boolean;
+  is_default_subcat:boolean;
+}

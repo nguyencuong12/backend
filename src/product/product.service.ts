@@ -89,4 +89,21 @@ export class ProductService {
       console.error('ERROR', error);
     }
   }
+
+  async createProductFromLinkAffilate(product: ProductCreateDto) {
+    try {
+
+      const newProduct = await new this.productModel(product);
+      let categoriesObject = {
+        itemID:product.id,
+        categories:product.categories
+      }
+      // const newCategories = 
+      return await newProduct.save();
+
+
+    } catch (err) {
+      throw err;
+    }
+  }
 }

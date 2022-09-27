@@ -24,7 +24,7 @@ export class Product {
   @Prop()
   categories: Array<string>;
   @Prop()
-  type: Array<string>;
+  AffilateType: Array<string>;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
