@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { productImages } from './interfaces/productInterface';
+// import { attributesInterface, categoriesInterface } from './dto/createProduct.dto';
+import { categoriesInterface } from './dto/create-product.dto';
 export type ProductDocument = Product & Document;
 
 @Schema({ versionKey: false })
@@ -24,7 +25,18 @@ export class Product {
   @Prop()
   categories: Array<string>;
   @Prop()
-  AffilateType: Array<string>;
+  affilateType: Array<string>;
 }
+
+export type ProductCategoriesDocument = ProductCategories & Document;
+@Schema({ versionKey: false })
+export class ProductCategories {
+  @Prop({ unique: true })
+  itemID: string;
+  @Prop()
+  categories: [categoriesInterface];
+}
+export const ProductCategoriesSchema =
+  SchemaFactory.createForClass(ProductCategories);
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

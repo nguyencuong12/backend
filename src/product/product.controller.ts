@@ -7,11 +7,11 @@ import {
   Res,
   Req,
   Param,
+  Query,
   Delete,
   UseInterceptors,
   UploadedFile,
   Put,
-  Query,
   UseGuards,
   UploadedFiles,
 } from '@nestjs/common';
@@ -34,6 +34,13 @@ const { uuid } = require('uuidv4');
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+  @Get('')
+  async fetchListProductDocument(@Res() response, @Query() query) {
+    console.log('PARAM', query);
+    const { page } = query;
+    let result = await this.productService.fetchListProductDocument(page);
+    response.status(HttpStatus.OK).json({ products: result });
+  }
   @Post('')
   async getProductFromLinkAffilate(@Res() response, @Body() body) {
     const { type, linkAffilate } = body;
@@ -44,11 +51,13 @@ export class ProductController {
     response.status(HttpStatus.OK).json({ product: result });
   }
   @Post('/create')
-  async createProductFromLinkAffilate(@Res() response, @Body() product: ProductCreateDto) {
-
-    let result = await this.productService.createProductFromLinkAffilate(product);
-   return response.status(HttpStatus.OK).json({product:result });
-
-
+  async createProductFromLinkAffilate(
+    @Res() response,
+    @Body() product: ProductCreateDto,
+  ) {
+    let result = await this.productService.createProductFromLinkAffilate(
+      product,
+    );
+    return response.status(HttpStatus.OK).json({ product: result });
   }
 }

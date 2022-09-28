@@ -12,6 +12,7 @@ export class ProductCreateDto {
   categories?: [categoriesInterface];
   attributes?: [attributesInterface];
   brand: string;
+  affilateType:[];
 }
 export class attributesInterface {
   brand_option: string;

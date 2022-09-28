@@ -6,7 +6,12 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Product, ProductDocument } from './product.schema';
+import {
+  Product,
+  ProductCategories,
+  ProductCategoriesDocument,
+  ProductDocument,
+} from './product.schema';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
 // import { ProductDto } from './dto/create-product.dto';
@@ -20,6 +25,8 @@ import fetch from 'node-fetch';
 export class ProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    @InjectModel(ProductCategories.name)
+    private productCategoriesModel: Model<ProductCategoriesDocument>,
     private readonly httpService: HttpService,
   ) {}
 
@@ -89,19 +96,27 @@ export class ProductService {
       console.error('ERROR', error);
     }
   }
-
+  async fetchListProductDocument(page: any) {
+    try {
+      return await this.productModel.find();
+    } catch (err) {
+      throw err;
+    }
+  }
   async createProductFromLinkAffilate(product: ProductCreateDto) {
     try {
-
       const newProduct = await new this.productModel(product);
       let categoriesObject = {
-        itemID:product.id,
-        categories:product.categories
-      }
-      // const newCategories = 
+        itemID: product.id,
+        categories: product.categories,
+      };
+
+      const newProductCategories = await new this.productCategoriesModel(
+        categoriesObject,
+      );
+      await newProductCategories.save();
+
       return await newProduct.save();
-
-
     } catch (err) {
       throw err;
     }
